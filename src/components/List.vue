@@ -27,6 +27,7 @@
 
 <script>
     import ListItem from './ListItem'
+    import axios from 'axios'
 
     export default {
         name: "List",
@@ -35,11 +36,7 @@
         },
         data () {
             return {
-                items: [
-                    { name: 'Fruits', selected: false },
-                    { name: 'Milk', selected: false },
-                    { name: 'Bananas', selected: false },
-                ],
+                items: [],
 
                 newItem: {
                     name: '',
@@ -94,7 +91,19 @@
 
             selectRecent(name) {
                 this.newName = name;
+            },
+
+            fetchItems: function () {
+                axios.get('./static/test.json').then((response) => {
+                    this.items = response.data
+                }, (error) => {
+                    console.log(error)
+                })
             }
+        },
+
+        mounted: function() {
+            this.fetchItems();
         }
     }
 </script>
