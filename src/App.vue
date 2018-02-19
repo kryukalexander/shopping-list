@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="wrapper">
-      <h1> {{ title }} </h1>
+      <h1 class="title"> {{ title }} </h1>
       <router-view/>
     </div>
   </div>
@@ -12,7 +12,7 @@ export default {
   name: 'App',
   data () {
       return {
-          title: 'Sample shopping list app'
+          title: 'Список покупок'
       }
   }
 }
@@ -42,9 +42,5 @@ export default {
     margin: 0 auto;
     min-height: 100vh;
     padding: 10px;
-  }
-
-  h1  {
-    margin-top: 0;
   }
 </style>

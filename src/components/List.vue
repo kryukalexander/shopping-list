@@ -2,13 +2,43 @@
     <div class="shopping-list">
 
         <div class="shopping-list__form">
-            <input type="text" v-model="newItem.name">
-            <button v-on:click="addItem()">Add</button>
-            <button v-on:click="clearSelected(cart)">Clear selected</button>
+            <div class="field">
+                <div class="columns">
+                    <div class="column">
+                        <label for="newProductName" class="label">Имя продукта</label>
+                        <div class="control">
+                            <input id="newProductName" class="input is-large" type="text" v-model="newItem.name">
+                        </div>
+                    </div>
+                    <div class="column">
+                        <label for="newProductcount" class="label">Количество</label>
+                        <div class="control">
+                            <input id="newProductcount" class="input is-large" type="text" v-model="newItem.count">
+                        </div>
+                    </div>
+                    <div class="column">
+                        <label for="newProductUnits" class="label">Единицы</label>
+                        <div class="control">
+                            <input id="newProductUnits" class="input is-large" type="text" v-model="newItem.units">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="field is-grouped">
+                <div class="control">
+                    <button class="button is-info" v-on:click="addItem()">Добавить</button>
+                </div>
+                <div class="control">
+                    <button class="button" v-on:click="clearSelected(cart)">Удалить выбранные</button>
+                </div>
+            </div>
         </div>
-        <div class="shopping-list__item" v-for="item in cart" v-bind:class="{'shopping-list__item--checked' : item.checked}" v-on:click="toggleItem(item)">
-            <list-item v-bind:item="item" v-bind:on-remove="removeItem"/>
+
+        <div class="shopping-list__item" v-for="item in cart" v-bind:class="{'shopping-list__item--checked' : item.checked}">
+            <list-item v-bind:item="item" v-bind:on-remove="removeItem" v-bind:on-toggle="toggleItem" v-bind:on-change="changeItem"/>
         </div>
+        <div class="shopping-list__divider"></div>
     </div>
 </template>
 
@@ -74,7 +104,10 @@
             },
 
             toggleItem(item) {
-                item.checked = !item.checked;
+                cartRef.child(item['.key']).child('checked').set(!item.checked);
+            },
+
+            changeItem(item) {
                 const copy = {...item};
                 delete copy['.key'];
                 cartRef.child(item['.key']).set(copy);
@@ -93,6 +126,10 @@
         order: 3;
     }
 
+    .shopping-list__item--checked ~ .shopping-list__divider {
+        display: block;
+    }
+
     .shopping-list__form {
         position: relative;
         margin-bottom: 20px;
@@ -100,6 +137,14 @@
 
     .shopping-list__item {
         margin-bottom: 5px;
+    }
+
+    .shopping-list__divider {
+        margin: 20px 0;
+        height: 1px;
+        width: 100%;
+        background-color: #ccc;
+        display: none;
     }
 
 
