@@ -1,36 +1,43 @@
 <template>
     <div class="shopping-list">
 
-        <div class="shopping-list__form">
-            <div class="field">
-                <div class="columns">
-                    <div class="column">
-                        <label for="newProductName" class="label">Имя продукта</label>
-                        <div class="control">
-                            <input id="newProductName" class="input is-large" type="text" v-model="newItem.name">
-                        </div>
-                    </div>
-                    <div class="column">
-                        <label for="newProductcount" class="label">Количество</label>
-                        <div class="control">
-                            <input id="newProductcount" class="input is-large" type="text" v-model="newItem.count">
-                        </div>
-                    </div>
-                    <div class="column">
-                        <label for="newProductUnits" class="label">Единицы</label>
-                        <div class="control">
-                            <input id="newProductUnits" class="input is-large" type="text" v-model="newItem.units">
-                        </div>
-                    </div>
-                </div>
+        <div  class="shopping-list__form">
 
+            <div class="shopping-list__form-toggler">
+                <button @click="toggleProductForm()" class="button">{{ showForm ? 'Скрыть' : 'Показать' }} форму</button>
             </div>
-            <div class="field is-grouped">
-                <div class="control">
-                    <button class="button is-info" v-on:click="addItem()">Добавить</button>
+
+            <div v-if="showForm" class="shopping-list__form-content">
+                <div class="field">
+                    <div class="columns">
+                        <div class="column">
+                            <label for="newProductName" class="label">Имя продукта</label>
+                            <div class="control">
+                                <input id="newProductName" class="input is-large" type="text" v-model="newItem.name">
+                            </div>
+                        </div>
+                        <!--<div class="column is-2-desktop">-->
+                        <!--<label for="newProductcount" class="label">Количество</label>-->
+                        <!--<div class="control">-->
+                        <!--<input id="newProductcount" class="input is-large" type="text" v-model="newItem.count">-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="column is-2-desktop">-->
+                        <!--<label for="newProductUnits" class="label">Единицы</label>-->
+                        <!--<div class="control">-->
+                        <!--<input id="newProductUnits" class="input is-large" type="text" v-model="newItem.units">-->
+                        <!--</div>-->
+                        <!--</div>-->
+                    </div>
+
                 </div>
-                <div class="control">
-                    <button class="button" v-on:click="clearSelected(cart)">Удалить выбранные</button>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-info" v-on:click="addItem()">Добавить</button>
+                    </div>
+                    <div class="control">
+                        <button class="button" v-on:click="clearSelected(cart)">Удалить выбранные</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -74,7 +81,9 @@
                 newItem: {
                     checked: false,
                     name: ''
-                }
+                },
+
+                showForm: true
             }
         },
 
@@ -111,6 +120,10 @@
                 const copy = {...item};
                 delete copy['.key'];
                 cartRef.child(item['.key']).set(copy);
+            },
+
+            toggleProductForm() {
+                this.showForm = !this.showForm
             }
         }
     }
@@ -135,6 +148,10 @@
         margin-bottom: 20px;
     }
 
+    .shopping-list__form-toggler {
+        margin-bottom: 10px;
+    }
+
     .shopping-list__item {
         margin-bottom: 5px;
     }
@@ -146,6 +163,5 @@
         background-color: #ccc;
         display: none;
     }
-
 
 </style>
