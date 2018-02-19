@@ -3,107 +3,82 @@
 
         <div class="shopping-list__form">
             <input type="text" v-model="newItem.name">
-            <input type="number" v-model="newItem.count">
-            <select name="" id="" v-model="newItem.units">
-                <option>pieces</option>
-                <option>kg</option>
-                <option>l</option>
-            </select>
-            <button v-on:click="addItem(newItem)">Add</button>
-            <button v-on:click="clearSelected()">Clear selected</button>
+            <button v-on:click="addItem()">Add</button>
+            <button v-on:click="clearSelected(cart)">Clear selected</button>
         </div>
-
-        <!--<div v-if="recentItems.length > 0" class="shopping-list__recent">-->
-            <!--<div class="shopping-list__recent-item" v-for="item in recentItems" v-on:click="selectRecent(item)">{{item}}</div>-->
-        <!--</div>-->
-
-        <div class="shopping-list__item" v-for="item in items" v-bind:class="{'shopping-list__item--selected' : item.selected}">
+        <div class="shopping-list__item" v-for="item in cart" v-bind:class="{'shopping-list__item--checked' : item.checked}" v-on:click="toggleItem(item)">
             <list-item v-bind:item="item" v-bind:on-remove="removeItem"/>
         </div>
-
-        <div v-if="hasSelectedItems()" class="shopping-list__divider"></div>
     </div>
 </template>
 
 <script>
     import ListItem from './ListItem'
-    import axios from 'axios'
+    import firebase from 'firebase';
+
+    let config = {
+        apiKey: "AIzaSyC_cVzjjKOYRUh870jlOepC3RN9el1Wrgs",
+        authDomain: "shopping-list-87df2.firebaseapp.com",
+        databaseURL: "https://shopping-list-87df2.firebaseio.com",
+        projectId: "shopping-list-87df2",
+        storageBucket: "shopping-list-87df2.appspot.com"
+    };
+
+
+    let app = firebase.initializeApp(config);
+    let db = app.database();
+    let cartRef = db.ref('cart');
 
     export default {
         name: "List",
         components: {
           ListItem
         },
+
+        firebase: {
+            cart: cartRef,
+        },
+
         data () {
             return {
-                items: [],
-
                 newItem: {
-                    name: '',
-                    count: '',
-                    units: ''
-                },
-                recentItems: [],
+                    checked: false,
+                    name: ''
+                }
             }
         },
 
         methods: {
-            addItem(newItem) {
-                if (newItem.name !== '') {
-                    let i = {};
-                    for (const key in newItem) {
-                        if (newItem[key] !== '') {
-                            i[key] = newItem[key];
-                            newItem[key] = ''
-                        }
-                    }
+            addItem() {
+                if (this.newItem.name !== '') {
 
-                    this.items.push(i);
-
-                    if ( this.recentItems.indexOf(name) < 0 ) {
-                        this.recentItems.push(name);
-                    }
+                    cartRef.push({
+                        checked: false,
+                        name: this.newItem.name
+                    });
                 }
 
-                newItem = {
-                    name: '',
-                    count: '',
-                    units: ''
+                this.newItem = {
+                    checked: false,
+                    name: ''
                 };
             },
 
-            hasSelectedItems(){
-                let result = 0;
-                this.items.map((item) => {
-                    if (item.selected) { result ++}
-                });
-                return result > 0
-            },
-
             removeItem(item) {
-                let index = this.items.indexOf(item);
-                this.items.splice(index, 1)
+                cartRef.child(item['.key']).remove()
             },
 
-            clearSelected() {
-                this.items = this.items.filter((item) => !item.selected)
+            clearSelected(array) {
+                let toDelete = array.filter((el) => el.checked);
+                toDelete.map((el) => { this.removeItem(el)});
             },
 
-            selectRecent(name) {
-                this.newName = name;
-            },
-
-            fetchItems: function () {
-                axios.get('./static/test.json').then((response) => {
-                    this.items = response.data
-                }, (error) => {
-                    console.log(error)
-                })
+            toggleItem(item) {
+                item.checked = !item.checked;
+                const copy = {...item};
+                delete copy['.key'];
+                cartRef.child(item['.key']).set(copy);
             }
-        },
-
-        mounted: function() {
-            this.fetchItems();
         }
     }
 </script>
@@ -114,17 +89,8 @@
         flex-direction: column;
     }
 
-    .shopping-list__item--selected {
-        opacity: 0.5;
+    .shopping-list__item--checked {
         order: 3;
-    }
-
-    .shopping-list__divider {
-        height: 1px;
-        width: 100%;
-        background-color: #ccc;
-        order: 2;
-        margin: 10px 0;
     }
 
     .shopping-list__form {
@@ -136,23 +102,5 @@
         margin-bottom: 5px;
     }
 
-    .shopping-list__recent {
-        background-color: white;
-        box-shadow: 0 0 2px 1px gray;
-        padding: 5px 0;
-        border-radius: 4px;
-        left: 0;
-        top: 100%;
-        margin: 10px 0;
-    }
-
-    .shopping-list__recent-item {
-        padding: 5px 10px;
-        cursor: pointer;
-    }
-
-    .shopping-list__recent-item:hover {
-        background-color: #f1f1f1;
-    }
 
 </style>
