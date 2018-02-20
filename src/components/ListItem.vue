@@ -1,7 +1,7 @@
 <template>
-    <div class="list-item" v-bind:class="{'list-item--checked' : item.checked}">
+    <div class="list-item" :class="{'list-item--checked' : item.checked}">
         <label class="list-item__checkbox">
-            <input type="checkbox" v-model="item.checked" @change="onChange(item)">
+            <input type="checkbox" v-model="item.checked" @change="onChange(item)" tabindex="0">
             <span></span>
         </label>
         <input type="text" class="list-item__input" v-model="item.name" @change="onChange(item)">
@@ -46,6 +46,7 @@
 
             &:focus {
                 outline: none;
+                background-color: #f2f2f2;
             }
         }
 
@@ -61,6 +62,7 @@
 
             &:focus {
                 outline: none;
+                background-color: #f2f2f2;
             }
         }
 
@@ -93,7 +95,10 @@
 
             input:checked + span {
                 background-image: url('../../static/success.svg');
+            }
 
+            input:focus + span {
+                background-color: #f2f2f2;
             }
 
         }
