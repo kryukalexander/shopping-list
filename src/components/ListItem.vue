@@ -1,28 +1,18 @@
 <template>
     <div class="list-item" v-bind:class="{'list-item--checked' : item.checked}">
-        <div class="list-item__content is-size-4"  v-if="!isEdited" v-on:click="onToggle(item)">
-            <span class="list-item__field">{{ item.name }}</span>
-        </div>
-        <div class="list-item__content" v-if="isEdited">
-            <input class="input" type="text" v-model="item.name">
-        </div>
-        <div class="list-item__buttons">
-            <button class="button is-success" v-on:click.stop="saveEdit()" v-if="isEdited">Сохранить</button>
-            <button class="button is-info"
-                    v-if="!isEdited && !item.checked"
-                    v-on:click.stop="startEdit()">
-                Изменить
-            </button>
-            <button class="button is-danger" v-if="!isEdited" v-on:click.stop="onRemove(item)">Удалить</button>
-        </div>
-
+        <label class="list-item__checkbox">
+            <input type="checkbox" v-model="item.checked" @change="onChange(item)">
+            <span></span>
+        </label>
+        <input type="text" class="list-item__input" v-model="item.name" @change="onChange(item)">
+        <button class="list-item__button" @click="onRemove(item)"></button>
     </div>
 </template>
 
 <script>
     export default {
         name: "list-item",
-        props: ["item", "onRemove", "onToggle", "onChange"],
+        props: ["item", "onRemove", "onChange"],
         data () {
             return {
                 isEdited: false
@@ -30,14 +20,7 @@
         },
 
         methods: {
-            startEdit() {
-                this.isEdited = true;
-            },
 
-            saveEdit() {
-                this.onChange(this.item);
-                this.isEdited = false;
-            },
         }
     }
 </script>
@@ -47,50 +30,78 @@
         display: flex;
         width: 100%;
         cursor: pointer;
-        background-color: #f2f2f2;
+        /*background-color: #f2f2f2;*/
     }
 
     .list-item .button {
         margin-left: 10px;
     }
 
-    .list-item__buttons {
-        align-self: center;
-        padding-right: 15px;
-    }
-
-    .list-item__content {
+    .list-item__input {
         flex-grow: 1;
-        align-self: center;
-        padding: 15px;
+        font-size: 18px;
+        background-color: transparent;
+        border: none;
+        line-height: 45px;
+        padding: 0 10px;
+        font-family: Roboto, sans-serif;
+        min-width: 100px;
     }
 
-    .list-item__field {
-        line-height: 21px;
+    .list-item__input:focus {
+        outline: none;
+    }
+
+    .list-item__button {
+        height: 45px;
+        width: 45px;
+        flex-shrink: 0;
+        border: none;
+        border-left: 1px solid #cccccc;
+        cursor: pointer;
+        background: transparent url("../../static/cross-out.svg") center no-repeat;
+        background-size: 50%;
+    }
+
+    .list-item__button:focus {
+        outline: none;
+    }
+
+    .list-item__checkbox {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+    }
+    .list-item__checkbox input {
+        position: absolute;
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+    }
+
+    .list-item__checkbox span {
+        content: '';
         display: inline-block;
+        flex-grow: 1;
+        width: 45px;
+        height: 45px;
+        border-right: 1px solid #ccc;
+        background-size: 60%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: url('../../static/not-checked.svg');
     }
 
-    .list-item--checked {
-        background-color: #f7f7f7;
+    .list-item__checkbox input:checked + span {
+        background-image: url('../../static/success.svg');
+
     }
 
-    .list-item--checked .list-item__field {
+
+    .list-item--checked .list-item__input {
         text-decoration: line-through;
         opacity: 0.5;
     }
 
-    @media (max-width: 768px) {
-        .list-item {
-            display: block;
-        }
-
-        .list-item__buttons {
-            padding: 15px;
-            border-top: 1px solid #dedede;
-        }
-
-        .list-item__buttons .button {
-            margin: 0;
-        }
-    }
 </style>

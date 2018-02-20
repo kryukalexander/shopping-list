@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <div class="wrapper">
-      <h1 class="title"> {{ title }} </h1>
       <router-view/>
     </div>
   </div>
@@ -11,9 +10,7 @@
 export default {
   name: 'App',
   data () {
-      return {
-          title: 'Список покупок'
-      }
+      return {}
   }
 }
 </script>
@@ -38,9 +35,18 @@ export default {
   .wrapper {
     width: 100%;
     max-width: 1000px;
-    background-color: #fff;
     margin: 0 auto;
     min-height: 100vh;
+  }
+
+  .panel {
     padding: 10px;
+    background-color: white;
+    margin-bottom: 10px;
+  }
+
+  .panel--no-padding {
+    padding: 0;
+    box-shadow: 0 1px 1px 1px rgba(0,0,0, 0.15);
   }
 </style>
