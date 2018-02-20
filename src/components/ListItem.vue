@@ -32,7 +32,7 @@
         width: 100%;
         cursor: pointer;
         background-color: #ffffff;
-        box-shadow: 0 1px 1px 1px rgba(0,0,0, 0.15);
+        box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.25);
 
         &__input {
             flex-grow: 1;
