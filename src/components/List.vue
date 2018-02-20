@@ -3,9 +3,9 @@
 
         <div  class="panel">
             <div class="shopping-list__form-content">
-                <input id="newProductName" class="input is-large" type="text"
+                <input id="newProductName" type="text"
                        @keyup.enter="addItem()"
-                       v-model="newItem.name" placeholder="Название">
+                       v-model="newItem.name" placeholder="Название" autofocus>
                 <button class="button is-info" v-on:click="addItem()">Добавить</button>
             </div>
         </div>
@@ -101,7 +101,7 @@
     .shopping-list__items {
         display: flex;
         flex-direction: column;
-        padding: 10px;
+        /*padding: 10px;*/
     }
 
     .shopping-list__item--checked {
