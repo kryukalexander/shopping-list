@@ -31,11 +31,8 @@
 
 <script>
     import ListItem from './ListItem'
-    import firebase from 'firebase';
-    import config from '../config';
+    import { db } from '../firebaseSetup'
 
-    let app = firebase.initializeApp(config);
-    let db = app.database();
     let cartRef = db.ref('cart');
 
     export default {
