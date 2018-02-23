@@ -4,15 +4,24 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueFire from 'vuefire'
-import { db } from './firebaseSetup'
+import { db } from './firebaseSetup';
+import firebase from 'firebase'
 
 Vue.use(VueFire);
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
+let app;
+
+firebase.auth().onAuthStateChanged(function(user){
+  if (!app) {
+      app = new Vue({
+          el: '#app',
+          router,
+          components: { App },
+          template: '<App/>'
+      });
+  }
 });
+
+/* eslint-disable no-new */
+

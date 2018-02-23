@@ -4,6 +4,7 @@
             <input type="text" v-model="email">
             <input type="text" v-model="password">
             <button @click="login()">Login</button>
+            <span v-if="error">{{error}}</span>
         </div>
     </div>
 </template>
@@ -15,16 +16,20 @@
         name: "login",
         data() {
             return {
-
+                email: '',
+                password: '',
+                error: false
             }
         },
         methods: {
 
             login() {
                 firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
-                    function(user){
-                        alert('Connected');
-                    }
+                    (user) => {
+                        console.log(user);
+                        this.$router.replace('list')
+                    },
+                    (err) => { this.error = err.message}
                 )
             }
         }

@@ -24,6 +24,8 @@
         <div class="list__footer">
             <div class="list__wrapper">
                 ©2018 Powered by <a href="https://vuejs.org/">vue.js</a> and <a href="https://firebase.google.com/">Google Firebase</a>
+
+                Logged as {{ user }} - <a href="#" @click.prevent="logout()">Logout</a>
             </div>
         </div>
     </div>
@@ -32,6 +34,7 @@
 <script>
     import ListItem from './ListItem'
     import { db } from '../firebaseSetup'
+    import firebase from 'firebase'
 
     let cartRef = db.ref('cart');
 
@@ -53,7 +56,9 @@
                 },
 
                 sortKey: 'date',
-                showForm: true
+                showForm: true,
+
+                user: firebase.auth().currentUser.email
             }
         },
 
@@ -92,6 +97,12 @@
                 const copy = {...item};
                 delete copy['.key'];
                 cartRef.child(item['.key']).set(copy);
+            },
+
+            logout() {
+                firebase.auth().signOut().then(() =>
+                    this.$router.replace('login')
+                )
             }
         }
     }
