@@ -1,10 +1,10 @@
 <template>
     <div class="login">
-        <img src="../../static/favicons/android-chrome-192x192.png" alt="">
+        <img class="login__icon" src="../../static/favicons/android-chrome-192x192.png" alt="">
 
         <div class="login__form">
-            <input type="text" v-model="email">
-            <input type="text" v-model="password">
+            <input type="email" v-model="email" placeholder="Email">
+            <input type="password" v-model="password" placeholder="Password">
             <button @click="login()">Login</button>
             <span v-if="error">{{error}}</span>
         </div>
@@ -64,6 +64,14 @@
                     margin-bottom: 10px;
                 }
             }
+
+            input:-webkit-autofill {
+                border: 1px solid rgb(238, 238, 238);
+            }
+        }
+
+        &__icon {
+            margin-bottom: 20px;
         }
     }
 </style>

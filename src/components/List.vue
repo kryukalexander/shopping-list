@@ -121,7 +121,6 @@
             max-width: 1000px;
             margin: 0 auto;
             padding: 0 10px;
-            /*background-color: red;*/
         }
 
         &__header {

@@ -4,11 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueFire from 'vuefire'
-import { db } from './firebaseSetup';
 import firebase from 'firebase'
 
 Vue.use(VueFire);
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 let app;
 

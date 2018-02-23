@@ -4,7 +4,7 @@ import List from '@/components/List'
 import Login from '@/components/Login'
 import firebase from 'firebase'
 
-Vue.use(Router)
+Vue.use(Router);
 
 let router = new Router({
     routes: [
@@ -17,7 +17,6 @@ let router = new Router({
                 requiresAuth: true
             }
         },
-
         {
             path: '*',
             component: Login
