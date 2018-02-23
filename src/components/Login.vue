@@ -1,5 +1,7 @@
 <template>
     <div class="login">
+        <img src="../../static/favicons/android-chrome-192x192.png" alt="">
+
         <div class="login__form">
             <input type="text" v-model="email">
             <input type="text" v-model="password">
@@ -38,15 +40,16 @@
 
 <style lang="scss" scoped>
     .login {
-        background-color: #f2f2f2;
+        background-color: #ffffff;
         height: 100%;
         width: 100%;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
 
         &__form {
-            width: 500px;
+            width: 400px;
             max-width: 100%;
             padding: 20px;
             background-color: #fff;
