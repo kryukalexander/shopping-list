@@ -178,10 +178,6 @@
 
             &--checked {
                 order: 3;
-
-                /*& ~ .list__divider {*/
-                    /*display: block;*/
-                /*}*/
             }
         }
 
@@ -190,7 +186,6 @@
             height: 1px;
             width: 100%;
             background-color: #ccc;
-            /*display: none;*/
             order: 2;
         }
     }
