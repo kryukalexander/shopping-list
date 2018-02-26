@@ -17,13 +17,18 @@
                          v-bind:class="{'list__item--checked' : item.checked}">
                         <list-item v-bind:item="item" v-bind:on-remove="removeItem" v-bind:on-change="changeItem"/>
                     </div>
-                    <div class="list__divider"></div>
+                    <div v-if="hasCheckedItems(cart)" class="list__divider"></div>
                 </div>
             </div>
         </div>
         <div class="list__footer">
             <div class="list__wrapper">
-                ©2018 Powered by <a href="https://vuejs.org/">vue.js</a> and <a href="https://firebase.google.com/">Google Firebase</a>
+                <div>
+                    ©2018 Powered by <a href="https://vuejs.org/">vue.js</a> and <a href="https://firebase.google.com/">Google Firebase</a>
+                </div>
+                <div>
+                    Logged as {{ username }} - <a href="#" @click.prevent="logout()">Logout</a>
+                </div>
             </div>
         </div>
     </div>
@@ -31,11 +36,9 @@
 
 <script>
     import ListItem from './ListItem'
-    import firebase from 'firebase';
-    import config from '../config';
+    import { db } from '../firebaseSetup'
+    import firebase from 'firebase'
 
-    let app = firebase.initializeApp(config);
-    let db = app.database();
     let cartRef = db.ref('cart');
 
     export default {
@@ -56,13 +59,16 @@
                 },
 
                 sortKey: 'date',
-                showForm: true
+                showForm: true,
+                username: firebase.auth().currentUser.displayName || firebase.auth().currentUser.email,
             }
         },
 
         computed: {
             sortedCart: function () {
-                return this.cart.sort( (a,b) => a.date < b.date )
+                this.cart = this.cart.sort( (a,b) => a.date < b.date );
+                this.cart = this.cart.sort( (a,b) => a.checked > b.checked );
+                return this.cart;
             }
         },
 
@@ -86,6 +92,14 @@
                 cartRef.child(item['.key']).remove()
             },
 
+            hasCheckedItems(array) {
+              let result = 0;
+              array.map((el) => {
+                  if (el.checked) { result++ }
+              });
+              return result > 0 && result < array.length;
+            },
+
             clearSelected(array) {
                 let toDelete = array.filter((el) => el.checked);
                 toDelete.map((el) => { this.removeItem(el)});
@@ -95,6 +109,12 @@
                 const copy = {...item};
                 delete copy['.key'];
                 cartRef.child(item['.key']).set(copy);
+            },
+
+            logout() {
+                firebase.auth().signOut().then(() =>
+                    this.$router.replace('login')
+                )
             }
         }
     }
@@ -113,7 +133,6 @@
             max-width: 1000px;
             margin: 0 auto;
             padding: 0 10px;
-            /*background-color: red;*/
         }
 
         &__header {
@@ -160,9 +179,9 @@
             &--checked {
                 order: 3;
 
-                & ~ .list__divider {
-                    display: block;
-                }
+                /*& ~ .list__divider {*/
+                    /*display: block;*/
+                /*}*/
             }
         }
 
@@ -171,7 +190,7 @@
             height: 1px;
             width: 100%;
             background-color: #ccc;
-            display: none;
+            /*display: none;*/
             order: 2;
         }
     }
@@ -194,8 +213,6 @@
                 outline: none;
             }
         }
-
-
     }
 
 </style>
