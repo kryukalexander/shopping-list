@@ -203,6 +203,7 @@
             line-height: 35px;
             padding: 0;
             margin-right: 20px;
+            min-width: 180px;
 
             &:focus {
                 outline: none;
