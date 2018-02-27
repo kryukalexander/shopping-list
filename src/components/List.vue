@@ -14,10 +14,17 @@
             <div class="list__wrapper">
                 <div class="list__items">
                     <div class="list__item" v-for="item in sortedCart"
+                         v-show="!(item.checked && !showCheckedItems)"
                          v-bind:class="{'list__item--checked' : item.checked}">
                         <list-item v-bind:item="item" v-bind:on-remove="removeItem" v-bind:on-change="changeItem"/>
                     </div>
-                    <div v-if="hasCheckedItems(cart)" class="list__divider"></div>
+                    <div v-if="hasCheckedItems(cart)" class="list__divider">
+                        <a href="#" @click.prevent="toggleCheckedItems()">
+                            <span v-if="showCheckedItems">Скрыть</span>
+                            <span v-if="!showCheckedItems"> Показать</span>
+                            отмеченные</a>
+                        <a href="#" @click.prevent="removeCheckedItems(cart)">Удалить отмеченные</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -58,9 +65,8 @@
                     name: ''
                 },
 
-                sortKey: 'date',
-                showForm: true,
                 username: firebase.auth().currentUser.displayName || firebase.auth().currentUser.email,
+                showCheckedItems: true
             }
         },
 
@@ -100,9 +106,13 @@
               return result > 0 && result < array.length;
             },
 
-            clearSelected(array) {
+            removeCheckedItems(array) {
                 let toDelete = array.filter((el) => el.checked);
                 toDelete.map((el) => { this.removeItem(el)});
+            },
+
+            toggleCheckedItems() {
+                this.showCheckedItems = !this.showCheckedItems;
             },
 
             changeItem(item) {
@@ -183,10 +193,30 @@
 
         &__divider {
             margin: 20px 0;
-            height: 1px;
+            display: flex;
             width: 100%;
-            background-color: #ccc;
             order: 2;
+            align-items: center;
+
+            &:before {
+                content: '';
+                height: 1px;
+                background-color: #ccc;
+                flex-grow: 1;
+                flex-shrink: 0;
+            }
+
+            a {
+                margin-left: 15px;
+                flex-grow: 0;
+
+                @media (max-width: 480px) {
+                    width: 100px;
+                    text-align: center;
+                }
+            }
+
+
         }
     }
 
