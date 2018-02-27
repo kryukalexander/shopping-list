@@ -5,7 +5,7 @@
                 <div class="list-form">
                     <input id="newProductName" class="list-form__input" type="text"
                            @keyup.enter="addItem()"
-                           v-model="newItem.name" placeholder="Название" autofocus>
+                           v-model="newString" placeholder="Название" autofocus>
                     <button class="button is-info" v-on:click="addItem()">Добавить</button>
                 </div>
             </div>
@@ -53,11 +53,8 @@
 
         data () {
             return {
-                newItem: {
-                    checked: false,
-                    name: ''
-                },
-
+                itemSeparator: ',',
+                newString: '',
                 sortKey: 'date',
                 showForm: true,
                 username: firebase.auth().currentUser.displayName || firebase.auth().currentUser.email,
@@ -74,18 +71,18 @@
 
         methods: {
             addItem() {
-                if (this.newItem.name !== '') {
-                    cartRef.push({
-                        checked: false,
-                        name: this.newItem.name,
-                        date: Date.now()
+                if (this.newString !== '') {
+                    let date = Date.now();
+                    let items = this.newString.split(this.itemSeparator);
+                    items.map((el) => {
+                        cartRef.push({
+                            checked: false,
+                            name: el.trim(),
+                            date: date,
+                        });
                     });
+                    this.newString = '';
                 }
-
-                this.newItem = {
-                    checked: false,
-                    name: ''
-                };
             },
 
             removeItem(item) {
