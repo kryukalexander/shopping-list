@@ -13,7 +13,7 @@
         <div class="list__main">
             <div class="list__wrapper">
                 <div class="list__items">
-                    <div class="list__item" v-for="item in sortedCart"
+                    <div class="list__item" v-for="item in sortedCart" :key="item['.key']"
                          v-show="!(item.checked && !showCheckedItems)"
                          v-bind:class="{'list__item--checked' : item.checked}">
                         <list-item v-bind:item="item" v-bind:on-remove="removeItem" v-bind:on-change="changeItem"/>
