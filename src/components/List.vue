@@ -19,10 +19,7 @@
                         <list-item v-bind:item="item" v-bind:on-remove="removeItem" v-bind:on-change="changeItem"/>
                     </div>
                     <div v-if="hasCheckedItems" class="list__divider">
-                        <a href="#" @click.prevent="toggleCheckedItems()">
-                            <span v-if="showCheckedItems">Скрыть</span>
-                            <span v-if="!showCheckedItems"> Показать</span>
-                            отмеченные</a>
+                        <a href="#" @click.prevent="toggleCheckedItems()">{{showCheckedItems ? 'Скрыть' : 'Показать'}} отмеченные</a>
                         <a href="#" @click.prevent="removeCheckedItems(cart)">Удалить отмеченные</a>
                     </div>
                 </div>
