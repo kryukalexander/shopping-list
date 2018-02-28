@@ -43,10 +43,10 @@
 
 <script>
     import ListItem from './ListItem'
-    import { db } from '../firebaseSetup'
+    import { cartRef } from '../firebaseSetup'
     import firebase from 'firebase'
 
-    let cartRef = db.ref('cart');
+
 
     export default {
         name: "List",
