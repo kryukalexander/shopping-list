@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 import config from './config';
 
-const isProd = process.env.npm_lifecycle_event === 'build';
+export const isProd = process.env.NODE_ENV === 'production';
 
 const connection = firebase.initializeApp(config);
 const db = connection.database();
