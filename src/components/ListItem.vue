@@ -1,7 +1,7 @@
 <template>
     <div class="list-item" :class="{'list-item--checked' : item.checked}">
         <label class="list-item__checkbox">
-            <input type="checkbox" v-model="item.checked" @change="onChange(item)" tabindex="0">
+            <input type="checkbox" v-model="item.checked" @change="onChange(item, true)" tabindex="0">
             <span></span>
         </label>
         <div class="list-item__info">

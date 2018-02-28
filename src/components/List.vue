@@ -113,10 +113,12 @@
                 this.showCheckedItems = !this.showCheckedItems;
             },
 
-            changeItem(item) {
+            changeItem(item, keepDate) {
                 const copy = {...item};
                 delete copy['.key'];
-                copy.editDate = Date.now();
+                if (!keepDate) {
+                    copy.editDate = Date.now();
+                }
                 cartRef.child(item['.key']).set(copy);
             },
 
