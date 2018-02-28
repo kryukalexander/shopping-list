@@ -18,7 +18,7 @@
                          v-bind:class="{'list__item--checked' : item.checked}">
                         <list-item v-bind:item="item" v-bind:on-remove="removeItem" v-bind:on-change="changeItem"/>
                     </div>
-                    <div v-if="hasCheckedItems(cart)" class="list__divider">
+                    <div v-if="hasCheckedItems" class="list__divider">
                         <a href="#" @click.prevent="toggleCheckedItems()">
                             <span v-if="showCheckedItems">Скрыть</span>
                             <span v-if="!showCheckedItems"> Показать</span>
@@ -73,7 +73,11 @@
                 this.cart = this.cart.sort( (a,b) => a.date < b.date );
                 this.cart = this.cart.sort( (a,b) => a.checked > b.checked );
                 return this.cart;
-            }
+            },
+
+            hasCheckedItems() {
+                return this.cart.some((el) => el.checked)
+            },
         },
 
         methods: {
@@ -94,14 +98,6 @@
 
             removeItem(item) {
                 cartRef.child(item['.key']).remove()
-            },
-
-            hasCheckedItems(array) {
-              let result = 0;
-              array.map((el) => {
-                  if (el.checked) { result++ }
-              });
-              return result > 0 && result < array.length;
             },
 
             removeCheckedItems(array) {
