@@ -6,7 +6,7 @@
         </label>
         <div class="list-item__info">
             <input type="text" class="list-item__input" v-model="item.name" @change="onChange(item)">
-            <div class="list-item__date">{{parseDate()}}</div>
+            <div class="list-item__date">{{parseDate}}</div>
         </div>
 
         <button class="list-item__button" @click="onRemove(item)"></button>
@@ -23,7 +23,7 @@
             }
         },
 
-        methods: {
+        computed: {
             parseDate() {
                 let status = !this.item.editDate ? 'Добавлено' : 'Изменено';
                 let date = !this.item.editDate ? this.item.date : this.item.editDate;
