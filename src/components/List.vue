@@ -30,10 +30,10 @@
         </div>
         <div class="list__footer">
             <div class="list__wrapper">
-                <div>
+                <div class="list__footer-row">
                     ©2018 Powered by <a href="https://vuejs.org/">vue.js</a> and <a href="https://firebase.google.com/">Google Firebase</a>
                 </div>
-                <div>
+                <div class="list__footer-row">
                     Logged as {{ username }} - <a href="#" @click.prevent="logout()">Logout</a>
                 </div>
             </div>
@@ -62,7 +62,6 @@
             return {
                 itemSeparator: ',',
                 newString: '',
-                sortKey: 'date',
                 showForm: true,
                 username: firebase.auth().currentUser.displayName || firebase.auth().currentUser.email,
                 showCheckedItems: true
@@ -117,6 +116,7 @@
             changeItem(item) {
                 const copy = {...item};
                 delete copy['.key'];
+                copy.editDate = Date.now();
                 cartRef.child(item['.key']).set(copy);
             },
 
@@ -216,6 +216,12 @@
             }
 
 
+        }
+
+        &__footer-row {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
         }
     }
 

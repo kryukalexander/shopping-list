@@ -39,7 +39,13 @@
     .env-status {
         position: fixed;
         right: 10px;
-        bottom: 10px;
+        bottom: 60px;
         font-size: 12px;
+        font-weight: bold;
+        padding: 4px 10px;
+        color: white;
+        background-color: red;
+        border-radius: 5px;
+        text-transform: uppercase;
     }
 </style>

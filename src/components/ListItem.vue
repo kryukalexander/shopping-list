@@ -4,7 +4,12 @@
             <input type="checkbox" v-model="item.checked" @change="onChange(item)" tabindex="0">
             <span></span>
         </label>
-        <input type="text" class="list-item__input" v-model="item.name" @change="onChange(item)">
+        <div class="list-item__info">
+            <input type="text" class="list-item__input" v-model="item.name" @change="onChange(item)">
+            <div class="list-item__date" v-if="!item.editDate">Добавлено {{parseDate(item.date) }} </div>
+            <div class="list-item__date" v-if="item.editDate">Изменено {{parseDate(item.editDate)}} </div>
+        </div>
+
         <button class="list-item__button" @click="onRemove(item)"></button>
     </div>
 </template>
@@ -20,7 +25,13 @@
         },
 
         methods: {
-
+            parseDate(date) {
+                let dateToParse = new Date(date);
+                let calendar = dateToParse.toLocaleDateString();
+                let hours = (dateToParse.getHours() + '').padStart(2, '0');
+                let minutes = (dateToParse.getMinutes() + '').padStart(2, '0');
+                return `${calendar}, ${hours}:${minutes}`;
+            }
         }
     }
 </script>
@@ -34,13 +45,28 @@
         background-color: #ffffff;
         box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.25);
 
-        &__input {
+        &__info {
             flex-grow: 1;
+            position: relative;
+        }
+
+        &__date {
+            position: absolute;
+            right: 10px;
+            top: 2px;
+            font-size: 12px;
+            font-style: italic;
+            color: #aaa;
+        }
+
+        &__input {
+            display: block;
+            width: 100%;
             font-size: 18px;
             background-color: transparent;
             border: none;
-            line-height: 45px;
-            padding: 0 10px;
+            line-height: 25px;
+            padding: 15px 10px;
             font-family: Roboto, sans-serif;
             min-width: 100px;
 
@@ -48,10 +74,13 @@
                 outline: none;
                 background-color: #f2f2f2;
             }
+
+            @media (max-width: 480px) {
+                padding: 20px 10px 5px;
+            }
         }
 
         &__button {
-            height: 45px;
             width: 45px;
             flex-shrink: 0;
             border: none;
