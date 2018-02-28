@@ -6,8 +6,7 @@
         </label>
         <div class="list-item__info">
             <input type="text" class="list-item__input" v-model="item.name" @change="onChange(item)">
-            <div class="list-item__date" v-if="!item.editDate">Добавлено {{parseDate(item.date) }} </div>
-            <div class="list-item__date" v-if="item.editDate">Изменено {{parseDate(item.editDate)}} </div>
+            <div class="list-item__date">{{parseDate()}}</div>
         </div>
 
         <button class="list-item__button" @click="onRemove(item)"></button>
@@ -25,12 +24,14 @@
         },
 
         methods: {
-            parseDate(date) {
+            parseDate() {
+                let status = !this.item.editDate ? 'Добавлено' : 'Изменено';
+                let date = !this.item.editDate ? this.item.date : this.item.editDate;
                 let dateToParse = new Date(date);
                 let calendar = dateToParse.toLocaleDateString();
                 let hours = (dateToParse.getHours() + '').padStart(2, '0');
                 let minutes = (dateToParse.getMinutes() + '').padStart(2, '0');
-                return `${calendar}, ${hours}:${minutes}`;
+                return `${status} ${calendar}, ${hours}:${minutes}`;
             }
         }
     }
