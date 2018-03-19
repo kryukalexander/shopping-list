@@ -13,11 +13,13 @@
         <div class="list__main">
             <div class="list__wrapper">
                 <div class="list__items">
-                    <div class="list__item" v-for="item in sortedCart" :key="item['.key']"
-                         v-show="!(item.checked && !showCheckedItems)"
-                         v-bind:class="{'list__item--checked' : item.checked}">
-                        <list-item v-bind:item="item" v-bind:on-remove="removeItem" v-bind:on-change="changeItem"/>
-                    </div>
+                    <transition-group name="flip-list">
+                        <div class="list__item" v-for="item in sortedCart" :key="item['.key']"
+                             v-show="!(item.checked && !showCheckedItems)"
+                             v-bind:class="{'list__item--checked' : item.checked}">
+                            <list-item v-bind:item="item" v-bind:on-remove="removeItem" v-bind:on-change="changeItem"/>
+                        </div>
+                    </transition-group>
                     <div v-if="hasCheckedItems" class="list__divider">
                         <a href="#" @click.prevent="toggleCheckedItems()">{{showCheckedItems ? 'Скрыть' : 'Показать'}} отмеченные</a>
                         <a href="#" @click.prevent="removeCheckedItems(cart)">Удалить отмеченные</a>
@@ -125,7 +127,29 @@
 </script>
 
 <style scoped lang="scss">
+    
+    $duration: .25s;
+    
+    .flip-list-move {
+        transition: all $duration;
+    }
 
+    .flip-list-enter {
+        opacity: 0;
+        transition: opacity $duration;
+    }
+
+    .flip-list-enter-to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    
+    .flip-list-leave-to {
+        opacity: 0;
+        transition: all $duration;
+        transform: translateX(100%);
+    }
+    
     .list {
         min-height: 100%;
         width: 100%;
