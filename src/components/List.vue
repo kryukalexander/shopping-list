@@ -13,6 +13,12 @@
         <div class="list__main">
             <div class="list__wrapper">
                 <div class="list__items">
+                    <transition name="fade">
+                        <div v-if="hasCheckedItems" class="list__divider">
+                            <a href="#" @click.prevent="toggleCheckedItems()">{{showCheckedItems ? 'Скрыть' : 'Показать'}} отмеченные</a>
+                            <a href="#" @click.prevent="removeCheckedItems(cart)">Удалить отмеченные</a>
+                        </div>
+                    </transition>
                     <transition-group name="flip-list">
                         <div class="list__item" v-for="item in sortedCart" :key="item['.key']"
                              v-show="!(item.checked && !showCheckedItems)"
@@ -20,10 +26,7 @@
                             <list-item v-bind:item="item" v-bind:on-remove="removeItem" v-bind:on-change="changeItem"/>
                         </div>
                     </transition-group>
-                    <div v-if="hasCheckedItems" class="list__divider">
-                        <a href="#" @click.prevent="toggleCheckedItems()">{{showCheckedItems ? 'Скрыть' : 'Показать'}} отмеченные</a>
-                        <a href="#" @click.prevent="removeCheckedItems(cart)">Удалить отмеченные</a>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -128,26 +131,38 @@
 
 <style scoped lang="scss">
     
-    $duration: .25s;
+    $animation-duration: .25s;
+    
+    .fade-enter-active, .fade-leave-active {
+        transition: all $animation-duration;
+    }
+
+    .fade-enter-to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    .fade-enter, .fade-leave-to {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
     
     .flip-list-move {
-        transition: all $duration;
+        transition: all $animation-duration;
     }
 
     .flip-list-enter {
         opacity: 0;
-        transition: opacity $duration;
+        transition: opacity $animation-duration;
     }
 
     .flip-list-enter-to {
-        transform: translateX(0);
         opacity: 1;
     }
     
     .flip-list-leave-to {
         opacity: 0;
-        transition: all $duration;
-        transform: translateX(100%);
+        transition: all $animation-duration;
     }
     
     .list {
@@ -213,7 +228,6 @@
             margin: 20px 0;
             display: flex;
             width: 100%;
-            order: 2;
             align-items: center;
 
             &:before {
