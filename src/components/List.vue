@@ -49,7 +49,6 @@
     import firebase from 'firebase'
 
 
-
     export default {
         name: "List",
         components: {
@@ -88,11 +87,14 @@
                     let date = Date.now();
                     let items = this.newString.split(this.itemSeparator);
                     items.map((el) => {
-                        cartRef.push({
-                            checked: false,
-                            name: el.trim(),
-                            date: date,
-                        });
+                        if (el.trim() !== '' ) {
+                            cartRef.push({
+                                checked: false,
+                                name: el.trim(),
+                                date: date,
+                            });
+                        }
+
                     });
                     this.newString = '';
                 }
@@ -148,7 +150,7 @@
     }
     
     .flip-list-move {
-        transition: all $animation-duration;
+        transition: all $animation-duration * 2;
     }
 
     .flip-list-enter {
@@ -162,6 +164,7 @@
     
     .flip-list-leave-to {
         opacity: 0;
+        transform: translateX(100%);
         transition: all $animation-duration;
     }
     
@@ -170,6 +173,7 @@
         width: 100%;
         display: flex;
         flex-direction: column;
+        overflow: hidden;
 
         &__wrapper {
             width: 100%;
@@ -205,7 +209,8 @@
             width: 100%;
             flex-grow: 1;
             padding: 65px 0 10px;
-            overflow: auto;
+            overflow-y: auto;
+            overflow-x: hidden;
 
         }
 
@@ -247,8 +252,6 @@
                     text-align: center;
                 }
             }
-
-
         }
 
         &__footer-row {
