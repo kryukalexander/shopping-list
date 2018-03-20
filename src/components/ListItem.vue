@@ -87,7 +87,7 @@
             border: none;
             border-left: 1px solid #cccccc;
             cursor: pointer;
-            background: transparent url("../../static/cross-out.svg") center no-repeat;
+            background: transparent url("../../static/img/cross-out.svg") center no-repeat;
             background-size: 50%;
 
             &:focus {
@@ -120,11 +120,11 @@
                 background-size: 60%;
                 background-repeat: no-repeat;
                 background-position: center;
-                background-image: url('../../static/not-checked.svg');
+                background-image: url('../../static/img/not-checked.svg');
             }
 
             input:checked + span {
-                background-image: url('../../static/success.svg');
+                background-image: url('../../static/img/success.svg');
             }
 
             input:focus + span {
