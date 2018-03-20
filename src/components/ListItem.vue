@@ -136,8 +136,10 @@
         &--checked {
             .list-item__input {
                 text-decoration: line-through;
-                opacity: 0.5;
+                opacity: 0.25;
             }
+
+            background-color: #f5f5f5;
         }
     }
 

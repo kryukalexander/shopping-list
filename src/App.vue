@@ -28,12 +28,13 @@
         margin: 0;
         padding: 0;
         height: 100%;
-        background-color: #f1f1f1;
+        background-color: #fff;
     }
 
     #app {
         font-family: 'Roboto', sans-serif;
         height: 100%;
+        background-color: #f1f1f1;
     }
 
     .env-status {

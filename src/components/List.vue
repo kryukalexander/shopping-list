@@ -13,15 +13,20 @@
         <div class="list__main">
             <div class="list__wrapper">
                 <div class="list__items">
-                    <div class="list__item" v-for="item in sortedCart" :key="item['.key']"
-                         v-show="!(item.checked && !showCheckedItems)"
-                         v-bind:class="{'list__item--checked' : item.checked}">
-                        <list-item v-bind:item="item" v-bind:on-remove="removeItem" v-bind:on-change="changeItem"/>
-                    </div>
-                    <div v-if="hasCheckedItems" class="list__divider">
-                        <a href="#" @click.prevent="toggleCheckedItems()">{{showCheckedItems ? 'Скрыть' : 'Показать'}} отмеченные</a>
-                        <a href="#" @click.prevent="removeCheckedItems(cart)">Удалить отмеченные</a>
-                    </div>
+                    <transition name="fade">
+                        <div v-if="hasCheckedItems" class="list__divider">
+                            <a href="#" @click.prevent="toggleCheckedItems()">{{showCheckedItems ? 'Скрыть' : 'Показать'}} отмеченные</a>
+                            <a href="#" @click.prevent="removeCheckedItems(cart)">Удалить отмеченные</a>
+                        </div>
+                    </transition>
+                    <transition-group name="flip-list">
+                        <div class="list__item" v-for="item in sortedCart" :key="item['.key']"
+                             v-show="!(item.checked && !showCheckedItems)"
+                             v-bind:class="{'list__item--checked' : item.checked}">
+                            <list-item v-bind:item="item" v-bind:on-remove="removeItem" v-bind:on-change="changeItem"/>
+                        </div>
+                    </transition-group>
+
                 </div>
             </div>
         </div>
@@ -42,7 +47,6 @@
     import ListItem from './ListItem'
     import { cartRef } from '../firebaseSetup'
     import firebase from 'firebase'
-
 
 
     export default {
@@ -83,11 +87,14 @@
                     let date = Date.now();
                     let items = this.newString.split(this.itemSeparator);
                     items.map((el) => {
-                        cartRef.push({
-                            checked: false,
-                            name: el.trim(),
-                            date: date,
-                        });
+                        if (el.trim() !== '' ) {
+                            cartRef.push({
+                                checked: false,
+                                name: el.trim(),
+                                date: date,
+                            });
+                        }
+
                     });
                     this.newString = '';
                 }
@@ -125,12 +132,48 @@
 </script>
 
 <style scoped lang="scss">
+    
+    $animation-duration: .25s;
+    
+    .fade-enter-active, .fade-leave-active {
+        transition: all $animation-duration;
+    }
 
+    .fade-enter-to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    .fade-enter, .fade-leave-to {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    
+    .flip-list-move {
+        transition: all $animation-duration * 2;
+    }
+
+    .flip-list-enter {
+        opacity: 0;
+        transition: opacity $animation-duration;
+    }
+
+    .flip-list-enter-to {
+        opacity: 1;
+    }
+    
+    .flip-list-leave-to {
+        opacity: 0;
+        transform: translateX(100%);
+        transition: all $animation-duration;
+    }
+    
     .list {
         min-height: 100%;
         width: 100%;
         display: flex;
         flex-direction: column;
+        overflow: hidden;
 
         &__wrapper {
             width: 100%;
@@ -166,7 +209,8 @@
             width: 100%;
             flex-grow: 1;
             padding: 65px 0 10px;
-            overflow: auto;
+            overflow-y: auto;
+            overflow-x: hidden;
 
         }
 
@@ -189,7 +233,6 @@
             margin: 20px 0;
             display: flex;
             width: 100%;
-            order: 2;
             align-items: center;
 
             &:before {
@@ -209,8 +252,6 @@
                     text-align: center;
                 }
             }
-
-
         }
 
         &__footer-row {
