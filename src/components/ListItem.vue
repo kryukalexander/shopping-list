@@ -4,12 +4,26 @@
             <input type="checkbox" v-model="item.checked" @change="onChange(item, true)" tabindex="0">
             <span></span>
         </label>
+        
+        <!--todo fix the onChange issue-->
+
+        <!--<div class="list-item__checkbox">-->
+            <!--<v-checkbox-->
+                <!--hide-details-->
+                <!--v-model="item.checked"-->
+                <!--v-on:change="onChange(item, true)"-->
+            <!--/>-->
+        <!--</div>-->
+
         <div class="list-item__info">
             <input type="text" class="list-item__input" v-model="item.name" @change="onChange(item)">
             <div class="list-item__date">{{parseDate}}</div>
         </div>
+        <div class="list-item__button">
+            <v-btn flat icon large><v-icon>clear</v-icon></v-btn>
+        </div>
 
-        <button class="list-item__button" @click="onRemove(item)"></button>
+        <!--<button class="list-item__button" @click="onRemove(item)"></button>-->
     </div>
 </template>
 
@@ -41,6 +55,7 @@
 
     .list-item {
         display: flex;
+        align-items: center;
         width: 100%;
         cursor: pointer;
         background-color: #ffffff;
@@ -80,57 +95,18 @@
                 padding: 20px 10px 5px;
             }
         }
-
-        &__button {
-            width: 45px;
-            flex-shrink: 0;
-            border: none;
-            border-left: 1px solid #cccccc;
-            cursor: pointer;
-            background: transparent url("../../static/img/cross-out.svg") center no-repeat;
-            background-size: 50%;
-
-            &:focus {
-                outline: none;
-                background-color: #f2f2f2;
-            }
-        }
-
+        
         &__checkbox {
-            position: relative;
+            flex-shrink: 0;
+            flex-grow: 0;
             display: flex;
             flex-direction: column;
-            cursor: pointer;
+            justify-content: center;
+            padding: 0 10px 0 10px;
+        }
 
-
-            input {
-                position: absolute;
-                opacity: 0;
-                width: 1px;
-                height: 1px;
-            }
-
-            span {
-                content: '';
-                display: inline-block;
-                flex-grow: 1;
-                width: 45px;
-                height: 45px;
-                border-right: 1px solid #ccc;
-                background-size: 60%;
-                background-repeat: no-repeat;
-                background-position: center;
-                background-image: url('../../static/img/not-checked.svg');
-            }
-
-            input:checked + span {
-                background-image: url('../../static/img/success.svg');
-            }
-
-            input:focus + span {
-                background-color: #f2f2f2;
-            }
-
+        &__button {
+            flex-shrink: 0;
         }
 
         &--checked {
@@ -142,9 +118,5 @@
             background-color: #f5f5f5;
         }
     }
-
-
-
-
 
 </style>

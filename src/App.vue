@@ -24,6 +24,10 @@
     * {
         box-sizing: border-box;
     }
+    
+    html {
+        overflow-y: auto;
+    }
 
     html, body {
         margin: 0;
@@ -40,7 +44,7 @@
     .env-status {
         position: fixed;
         right: 10px;
-        bottom: 10px;
+        bottom: 50px;
         font-size: 12px;
         font-weight: bold;
         padding: 4px 10px;

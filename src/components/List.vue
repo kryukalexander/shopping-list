@@ -11,10 +11,7 @@
                         :hide-details="true"
                         :color="'white'"
                     />
-                        
-                    <!--<input id="newProductName" class="list-form__input" type="text"-->
-                           <!--@keyup.enter="addItem()"-->
-                           <!--v-model="newString" placeholder="Название" autofocus>-->
+
                     <v-btn v-on:click="addItem()"> <v-icon>add</v-icon> Добавить</v-btn>
                 </div>
         </v-toolbar>
@@ -265,6 +262,7 @@
         
         .btn {
             margin-top: 17px;
+            margin-right: 0;
         }
     }
 
