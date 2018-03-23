@@ -3,9 +3,24 @@
         <img class="login__icon" src="../../static/favicons/android-chrome-192x192.png" alt="">
 
         <div class="login__form">
-            <input type="email" v-model="email" placeholder="Email">
-            <input type="password" v-model="password" placeholder="Password">
-            <button @click="login()">Login</button>
+            <v-text-field
+                    type="email"
+                    name="Login"
+                    label="Login"
+                    v-model="email"
+                    :color="'error'"
+            />
+            <v-text-field
+                    label="Password"
+                    name="Password"
+                    v-model="password"
+                    :type="showPassword ? 'password' : 'text'"
+                    :append-icon="showPassword ? 'visibility' : 'visibility_off'"
+                    :append-icon-cb="() => (showPassword = !showPassword)"
+                    :color="'error'"
+            />
+
+            <v-btn @click="login()" color="error">Login</v-btn>
             <span v-if="error">{{error}}</span>
         </div>
     </div>
@@ -20,7 +35,8 @@
             return {
                 email: '',
                 password: '',
-                error: false
+                error: false,
+                showPassword: false
             }
         },
         methods: {
@@ -53,20 +69,6 @@
             padding: 20px;
             background-color: #fff;
             border-radius: 10px;
-            /*box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.15);*/
-
-            * {
-                display: block;
-                width: 100%;
-
-                &:not(:last-child) {
-                    margin-bottom: 10px;
-                }
-            }
-
-            input:-webkit-autofill {
-                border: 1px solid rgb(238, 238, 238);
-            }
         }
 
         &__icon {

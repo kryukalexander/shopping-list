@@ -1,8 +1,9 @@
 <template>
     <div id="app">
-
-        <router-view/>
-        <div v-if="!production" class="env-status">Dev mode</div>
+        <v-app>
+            <router-view/>
+            <div v-if="!production" class="env-status">Dev mode</div>
+        </v-app>
     </div>
 </template>
 
@@ -33,14 +34,13 @@
 
     #app {
         font-family: 'Roboto', sans-serif;
-        height: 100%;
         background-color: #f1f1f1;
     }
 
     .env-status {
         position: fixed;
         right: 10px;
-        bottom: 60px;
+        bottom: 10px;
         font-size: 12px;
         font-weight: bold;
         padding: 4px 10px;
