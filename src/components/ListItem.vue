@@ -20,7 +20,7 @@
             <div class="list-item__date">{{parseDate}}</div>
         </div>
         <div class="list-item__button">
-            <v-btn flat icon large><v-icon>clear</v-icon></v-btn>
+            <v-btn @click="onRemove(item)" flat icon large><v-icon>clear</v-icon></v-btn>
         </div>
 
         <!--<button class="list-item__button" @click="onRemove(item)"></button>-->
