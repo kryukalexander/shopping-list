@@ -1,10 +1,8 @@
 <template>
-    <div id="app">
-        <v-app>
-            <router-view/>
-            <div v-if="!production" class="env-status">Dev mode</div>
-        </v-app>
-    </div>
+    <v-app>
+        <router-view/>
+        <div v-if="!production" class="env-status">Dev mode</div>
+    </v-app>
 </template>
 
 <script>
@@ -39,6 +37,11 @@
     #app {
         font-family: 'Roboto', sans-serif;
         background-color: #f1f1f1;
+        min-height: 100%;
+    }
+
+    .application--wrap {
+        min-height: 100% !important;
     }
 
     .env-status {
