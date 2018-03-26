@@ -1,41 +1,48 @@
 <template>
-    <div class="list">
-        <div class="list__header">
-            <div class="list__wrapper">
-                <div class="list-form">
-                    <input id="newProductName" class="list-form__input" type="text"
-                           @keyup.enter="addItem()"
-                           v-model="newString" placeholder="Название" autofocus>
-                    <button class="button is-info" v-on:click="addItem()">Добавить</button>
-                </div>
-            </div>
-        </div>
-        <div class="list__main">
-            <div class="list__wrapper">
-                <div class="list__items">
-                    <transition name="fade">
-                        <div v-if="hasCheckedItems" class="list__divider">
-                            <a href="#" @click.prevent="toggleCheckedItems()">{{showCheckedItems ? 'Скрыть' : 'Показать'}} отмеченные</a>
-                            <a href="#" @click.prevent="removeCheckedItems(cart)">Удалить отмеченные</a>
-                        </div>
-                    </transition>
-                    <transition-group name="flip-list">
-                        <div class="list__item" v-for="item in sortedCart" :key="item['.key']"
-                             v-show="!(item.checked && !showCheckedItems)"
-                             v-bind:class="{'list__item--checked' : item.checked}">
-                            <list-item v-bind:item="item" v-bind:on-remove="removeItem" v-bind:on-change="changeItem"/>
-                        </div>
-                    </transition-group>
+    <div class="List">
+        <v-toolbar :color="'error'" :fixed="true">
+            <div class="list-form">
+                <v-text-field 
+                    :dark="true"
+                    placeholder="Название"
+                    @keyup.enter="addItem()"
+                    v-model="newString"
+                    :autofocus="true"
+                    :hide-details="true"
+                    :color="'white'"
+                />
 
+                <v-btn v-on:click="addItem()"> <v-icon>add</v-icon> Добавить</v-btn>
+            </div>
+        </v-toolbar>
+        <div class="List__main">
+            <div class="List__items List__wrapper">
+                <div v-if="cart.length === 0" class="List__empty display-2">
+                    Здесь пусто.
                 </div>
+                <transition name="fade">
+                    <div v-if="hasCheckedItems" class="List__divider">
+                        <a href="#" @click.prevent="toggleCheckedItems()">{{showCheckedItems ? 'Скрыть' : 'Показать'}} отмеченные</a>
+                        <a href="#" @click.prevent="removeCheckedItems(cart)">Удалить отмеченные</a>
+                    </div>
+                </transition>
+                <transition-group name="flip-list">
+
+                    <div class="List__item" v-for="item in sortedCart" :key="item['.key']"
+                         v-show="!(item.checked && !showCheckedItems)"
+                         v-bind:class="{'list__item--checked' : item.checked}">
+                        <list-item v-bind:item="item" v-bind:on-remove="removeItem" v-bind:on-change="changeItem"/>
+                    </div>
+                </transition-group>
+
             </div>
         </div>
-        <div class="list__footer">
-            <div class="list__wrapper">
-                <div class="list__footer-row">
+        <div class="List__footer">
+            <div class="List__wrapper">
+                <div class="List__footer-row">
                     ©2018 Powered by <a href="https://vuejs.org/">vue.js</a> and <a href="https://firebase.google.com/">Google Firebase</a>
                 </div>
-                <div class="list__footer-row">
+                <div class="List__footer-row">
                     Logged as {{ username }} - <a href="#" @click.prevent="logout()">Logout</a>
                 </div>
             </div>
@@ -131,7 +138,7 @@
     }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
     
     $animation-duration: .25s;
     
@@ -168,12 +175,16 @@
         transition: all $animation-duration;
     }
     
-    .list {
+    .List {
         min-height: 100%;
         width: 100%;
         display: flex;
         flex-direction: column;
         overflow: hidden;
+
+        .toolbar__content {
+            min-height: 64px !important;
+        }
 
         &__wrapper {
             width: 100%;
@@ -181,18 +192,11 @@
             margin: 0 auto;
             padding: 0 10px;
         }
-
-        &__header {
-            flex-grow: 0;
-            flex-shrink: 0;
-            background-color: #fff;
-            padding: 10px 0 5px;
-            position: fixed;
-            width: 100%;
-            left: 0;
-            top: 0;
-            z-index: 10;
-            box-shadow: 0 0 4px 2px rgba(0,0,0,0.15);
+        
+        &__empty {
+            margin-top: auto;
+            margin-bottom: auto;
+            text-align: center;
         }
 
         &__footer {
@@ -208,10 +212,9 @@
         &__main {
             width: 100%;
             flex-grow: 1;
-            padding: 65px 0 10px;
-            overflow-y: auto;
+            padding: 75px 0 10px;
             overflow-x: hidden;
-
+            display: flex;
         }
 
         &__items {
@@ -263,22 +266,14 @@
 
     .list-form {
         width: 100%;
+        max-width: 1000px;
+        padding: 0 10px;
+        margin: 0 auto;
         display: flex;
-
-        &__input {
-            flex-grow: 1;
-            border: none;
-            border-bottom: 1px solid #cccccc;
-            background-color: transparent;
-            font-size: 20px;
-            line-height: 35px;
-            padding: 0;
-            margin-right: 20px;
-            min-width: 180px;
-
-            &:focus {
-                outline: none;
-            }
+        
+        .btn {
+            margin-top: 17px;
+            margin-right: 0;
         }
     }
 

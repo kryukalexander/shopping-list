@@ -1,9 +1,8 @@
 <template>
-    <div id="app">
-
+    <v-app>
         <router-view/>
         <div v-if="!production" class="env-status">Dev mode</div>
-    </div>
+    </v-app>
 </template>
 
 <script>
@@ -23,6 +22,10 @@
     * {
         box-sizing: border-box;
     }
+    
+    html {
+        overflow-y: auto;
+    }
 
     html, body {
         margin: 0;
@@ -33,14 +36,18 @@
 
     #app {
         font-family: 'Roboto', sans-serif;
-        height: 100%;
         background-color: #f1f1f1;
+        min-height: 100%;
+    }
+
+    .application--wrap {
+        min-height: 100% !important;
     }
 
     .env-status {
         position: fixed;
         right: 10px;
-        bottom: 60px;
+        bottom: 50px;
         font-size: 12px;
         font-weight: bold;
         padding: 4px 10px;
