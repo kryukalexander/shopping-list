@@ -16,23 +16,25 @@
             </div>
         </v-toolbar>
         <div class="List__main">
-            <div class="List__wrapper">
-                <div class="List__items">
-                    <transition name="fade">
-                        <div v-if="hasCheckedItems" class="List__divider">
-                            <a href="#" @click.prevent="toggleCheckedItems()">{{showCheckedItems ? 'Скрыть' : 'Показать'}} отмеченные</a>
-                            <a href="#" @click.prevent="removeCheckedItems(cart)">Удалить отмеченные</a>
-                        </div>
-                    </transition>
-                    <transition-group name="flip-list">
-                        <div class="List__item" v-for="item in sortedCart" :key="item['.key']"
-                             v-show="!(item.checked && !showCheckedItems)"
-                             v-bind:class="{'list__item--checked' : item.checked}">
-                            <list-item v-bind:item="item" v-bind:on-remove="removeItem" v-bind:on-change="changeItem"/>
-                        </div>
-                    </transition-group>
-
+            <div class="List__items List__wrapper">
+                <div v-if="cart.length === 0" class="List__empty display-2">
+                    Здесь пусто.
                 </div>
+                <transition name="fade">
+                    <div v-if="hasCheckedItems" class="List__divider">
+                        <a href="#" @click.prevent="toggleCheckedItems()">{{showCheckedItems ? 'Скрыть' : 'Показать'}} отмеченные</a>
+                        <a href="#" @click.prevent="removeCheckedItems(cart)">Удалить отмеченные</a>
+                    </div>
+                </transition>
+                <transition-group name="flip-list">
+
+                    <div class="List__item" v-for="item in sortedCart" :key="item['.key']"
+                         v-show="!(item.checked && !showCheckedItems)"
+                         v-bind:class="{'list__item--checked' : item.checked}">
+                        <list-item v-bind:item="item" v-bind:on-remove="removeItem" v-bind:on-change="changeItem"/>
+                    </div>
+                </transition-group>
+
             </div>
         </div>
         <div class="List__footer">
@@ -190,6 +192,12 @@
             margin: 0 auto;
             padding: 0 10px;
         }
+        
+        &__empty {
+            margin-top: auto;
+            margin-bottom: auto;
+            text-align: center;
+        }
 
         &__footer {
             flex-grow: 0;
@@ -205,9 +213,8 @@
             width: 100%;
             flex-grow: 1;
             padding: 75px 0 10px;
-            overflow-y: auto;
             overflow-x: hidden;
-
+            display: flex;
         }
 
         &__items {
