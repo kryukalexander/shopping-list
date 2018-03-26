@@ -180,6 +180,10 @@
         flex-direction: column;
         overflow: hidden;
 
+        .toolbar__content {
+            min-height: 64px !important;
+        }
+
         &__wrapper {
             width: 100%;
             max-width: 1000px;

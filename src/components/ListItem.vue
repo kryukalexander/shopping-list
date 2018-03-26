@@ -58,9 +58,9 @@
 
         &__date {
             position: absolute;
-            right: 10px;
-            top: 2px;
-            font-size: 12px;
+            right: 0;
+            top: 0;
+            font-size: 11px;
             font-style: italic;
             color: #aaa;
         }
@@ -79,10 +79,6 @@
             &:focus {
                 outline: none;
                 background-color: #f2f2f2;
-            }
-
-            @media (max-width: 480px) {
-                padding: 20px 10px 5px;
             }
         }
         
