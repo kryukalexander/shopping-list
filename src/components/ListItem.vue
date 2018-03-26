@@ -92,6 +92,10 @@
             input[type=checkbox] {
                 display: none;
             }
+            
+            > * {
+                cursor: pointer;
+            }
         }
 
         &__button {
