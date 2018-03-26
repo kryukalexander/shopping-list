@@ -1,7 +1,7 @@
 <template>
     <div class="list-item" :class="{'list-item--checked' : item.checked}">
         <label class="list-item__checkbox">
-            <input type="checkbox" v-model="item.checked" @change="onChange(item, true)" tabindex="0">
+            <input type="checkbox" v-model="item.checked" @change="onChange(item, true)" tabindex="0"/>
             <v-icon>{{ item.checked ? 'check_box' : 'check_box_outline_blank'}}</v-icon>
         </label>
 
@@ -9,11 +9,10 @@
             <input type="text" class="list-item__input" v-model="item.name" @change="onChange(item)">
             <div class="list-item__date">{{parseDate}}</div>
         </div>
+        
         <div class="list-item__button">
             <v-btn @click="onRemove(item)" flat icon large><v-icon>clear</v-icon></v-btn>
         </div>
-
-        <!--<button class="list-item__button" @click="onRemove(item)"></button>-->
     </div>
 </template>
 
