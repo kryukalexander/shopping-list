@@ -2,18 +2,8 @@
     <div class="list-item" :class="{'list-item--checked' : item.checked}">
         <label class="list-item__checkbox">
             <input type="checkbox" v-model="item.checked" @change="onChange(item, true)" tabindex="0">
-            <span></span>
+            <v-icon>{{ item.checked ? 'check_box' : 'check_box_outline_blank'}}</v-icon>
         </label>
-        
-        <!--todo fix the onChange issue-->
-
-        <!--<div class="list-item__checkbox">-->
-            <!--<v-checkbox-->
-                <!--hide-details-->
-                <!--v-model="item.checked"-->
-                <!--v-on:change="onChange(item, true)"-->
-            <!--/>-->
-        <!--</div>-->
 
         <div class="list-item__info">
             <input type="text" class="list-item__input" v-model="item.name" @change="onChange(item)">
@@ -103,6 +93,10 @@
             flex-direction: column;
             justify-content: center;
             padding: 0 10px 0 10px;
+            
+            input[type=checkbox] {
+                display: none;
+            }
         }
 
         &__button {

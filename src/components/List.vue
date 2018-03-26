@@ -1,19 +1,19 @@
 <template>
     <div class="List">
         <v-toolbar :color="'error'" :fixed="true">
-                <div class="list-form">
-                    <v-text-field 
-                        :dark="true"
-                        placeholder="Название"
-                        @keyup.enter="addItem()"
-                        v-model="newString"
-                        :autofocus="true"
-                        :hide-details="true"
-                        :color="'white'"
-                    />
+            <div class="list-form">
+                <v-text-field 
+                    :dark="true"
+                    placeholder="Название"
+                    @keyup.enter="addItem()"
+                    v-model="newString"
+                    :autofocus="true"
+                    :hide-details="true"
+                    :color="'white'"
+                />
 
-                    <v-btn v-on:click="addItem()"> <v-icon>add</v-icon> Добавить</v-btn>
-                </div>
+                <v-btn v-on:click="addItem()"> <v-icon>add</v-icon> Добавить</v-btn>
+            </div>
         </v-toolbar>
         <div class="List__main">
             <div class="List__wrapper">
