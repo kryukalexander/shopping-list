@@ -3,37 +3,43 @@
         <v-toolbar :color="'error'" :fixed="true" :height="64">
             <div class="list-form">
                 <v-text-field 
-                    :dark="true"
+                    solo
+                    flat
                     placeholder="Название"
                     @keyup.enter="addItem()"
                     v-model="newString"
                     :autofocus="true"
                     :hide-details="true"
-                    :color="'white'"
                 />
 
-                <v-btn v-on:click="addItem()"> <v-icon>add</v-icon> Добавить</v-btn>
+                <v-btn icon dark v-on:click="addItem()"><v-icon>add</v-icon></v-btn>
             </div>
         </v-toolbar>
         <div class="List__main">
             <div class="List__items List__wrapper">
                 <div v-if="cart.length === 0" class="List__empty display-2">
-                    Здесь пусто.
+                    Пока здесь пусто.
                 </div>
-                <div class="List__divider" v-if="cart.length !== 0">
+                <div class="List__info" v-if="cart.length !== 0">
                     
-                    <div class="List__counter">{{ checkedItemsCount }}/{{ cart.length }}</div>
+                    <div class="List__counter title">
+                        {{ checkedItemsCount }}/{{cart.length }}
+                    </div>
                     
-                    <a v-if="checkedItemsCount" href="#" @click.prevent="toggleCheckedItems()">
-                        {{showCheckedItems ? 'Скрыть' : 'Показать'}} отмеченные
-                    </a>
+                    <v-btn v-if="checkedItemsCount"  @click.prevent="toggleCheckedItems()" icon>
+                        <v-icon>{{!showCheckedItems ? 'visibility' : 'visibility_off'}}</v-icon>
+                    </v-btn>
                     
-                    <a v-if="checkedItemsCount" href="#" @click.prevent="removeCheckedItems(cart)">Удалить отмеченные</a>
+                    <v-btn v-if="checkedItemsCount"  @click.prevent="removeCheckedItems(cart)" icon>
+                        <v-icon>delete</v-icon>
+                    </v-btn>
+                
                 </div>
                 
                 <transition-group name="flip-list">
                     
-                    <list-item v-for="item in sortedCart" 
+                    <list-item v-for="item in sortedCart"
+                               v-show="!(item.checked && !showCheckedItems)"
                                :key="item['.key']" 
                                :item="item" 
                                :on-remove="removeItem" 
@@ -92,7 +98,7 @@
             checkedItemsCount() {
                 let result = 0;
                 this.cart.map((el) => {
-                    if (el.checked) { result++ };
+                    if (el.checked) { result++ }
                 });
                 
                 return result;
@@ -179,10 +185,6 @@
         flex-direction: column;
         overflow: hidden;
 
-        /*.toolbar__content {*/
-            /*min-height: 64px !important;*/
-        /*}*/
-
         &__wrapper {
             width: 100%;
             max-width: 1000px;
@@ -212,10 +214,9 @@
         
         &__counter {
             order: -1;
-            margin-right: 10px;
         }
 
-        &__divider {
+        &__info {
             margin: 10px 0;
             display: flex;
             width: 100%;
@@ -227,16 +228,7 @@
                 background-color: #ccc;
                 flex-grow: 1;
                 flex-shrink: 0;
-            }
-
-            a {
-                margin-left: 15px;
-                flex-grow: 0;
-
-                @media (max-width: 480px) {
-                    width: 100px;
-                    text-align: right;
-                }
+                margin: 0 10px;
             }
         }
 
@@ -253,11 +245,6 @@
         padding: 0 10px;
         margin: 0 auto;
         display: flex;
-        
-        .btn {
-            margin-top: 17px;
-            margin-right: 0;
-        }
     }
 
 </style>
