@@ -1,6 +1,6 @@
 <template>
     <div class="List">
-        <v-toolbar :color="'error'" :fixed="true">
+        <v-toolbar :color="'error'" :fixed="true" :height="64">
             <div class="list-form">
                 <v-text-field 
                     :dark="true"
@@ -20,24 +20,30 @@
                 <div v-if="cart.length === 0" class="List__empty display-2">
                     Здесь пусто.
                 </div>
-                <transition name="fade">
-                    <div v-if="hasCheckedItems" class="List__divider">
-                        <a href="#" @click.prevent="toggleCheckedItems()">{{showCheckedItems ? 'Скрыть' : 'Показать'}} отмеченные</a>
-                        <a href="#" @click.prevent="removeCheckedItems(cart)">Удалить отмеченные</a>
-                    </div>
-                </transition>
+                <div class="List__divider" v-if="cart.length !== 0">
+                    
+                    <div class="List__counter">{{ checkedItemsCount }}/{{ cart.length }}</div>
+                    
+                    <a v-if="checkedItemsCount" href="#" @click.prevent="toggleCheckedItems()">
+                        {{showCheckedItems ? 'Скрыть' : 'Показать'}} отмеченные
+                    </a>
+                    
+                    <a v-if="checkedItemsCount" href="#" @click.prevent="removeCheckedItems(cart)">Удалить отмеченные</a>
+                </div>
+                
                 <transition-group name="flip-list">
+                    
+                    <list-item v-for="item in sortedCart" 
+                               :key="item['.key']" 
+                               :item="item" 
+                               :on-remove="removeItem" 
+                               :on-change="changeItem"
+                    />
 
-                    <div class="List__item" v-for="item in sortedCart" :key="item['.key']"
-                         v-show="!(item.checked && !showCheckedItems)"
-                         v-bind:class="{'list__item--checked' : item.checked}">
-                        <list-item v-bind:item="item" v-bind:on-remove="removeItem" v-bind:on-change="changeItem"/>
-                    </div>
                 </transition-group>
-
             </div>
         </div>
-        <v-footer :color="'white'">
+        <v-footer :color="'white'" :height="'auto'" class="pt-1 pb-1 caption" >
             <div class="List__wrapper">
                 <div class="List__footer-row">
                     ©2018 Powered by <a href="https://vuejs.org/">vue.js</a> and <a href="https://firebase.google.com/">Google Firebase</a>
@@ -83,8 +89,13 @@
                 return this.cart;
             },
 
-            hasCheckedItems() {
-                return this.cart.some((el) => el.checked)
+            checkedItemsCount() {
+                let result = 0;
+                this.cart.map((el) => {
+                    if (el.checked) { result++ };
+                });
+                
+                return result;
             },
         },
 
@@ -142,20 +153,6 @@
     
     $animation-duration: .25s;
     
-    .fade-enter-active, .fade-leave-active {
-        transition: all $animation-duration;
-    }
-
-    .fade-enter-to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    
-    .fade-enter, .fade-leave-to {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    
     .flip-list-move {
         transition: all $animation-duration * 2;
     }
@@ -182,9 +179,9 @@
         flex-direction: column;
         overflow: hidden;
 
-        .toolbar__content {
-            min-height: 64px !important;
-        }
+        /*.toolbar__content {*/
+            /*min-height: 64px !important;*/
+        /*}*/
 
         &__wrapper {
             width: 100%;
@@ -212,18 +209,14 @@
             flex-direction: column;
             flex-grow: 1;
         }
-
-        &__item {
-            margin-bottom: 10px;
-            order: 1;
-
-            &--checked {
-                order: 3;
-            }
+        
+        &__counter {
+            order: -1;
+            margin-right: 10px;
         }
 
         &__divider {
-            margin: 20px 0;
+            margin: 10px 0;
             display: flex;
             width: 100%;
             align-items: center;
@@ -242,7 +235,7 @@
 
                 @media (max-width: 480px) {
                     width: 100px;
-                    text-align: center;
+                    text-align: right;
                 }
             }
         }
