@@ -17,7 +17,10 @@
         </v-toolbar>
         <div class="List__main">
             <div class="List__items List__wrapper">
-                <div v-if="cart.length === 0" class="List__empty display-2">
+                <div v-if="!loaded" class="List__empty display-2">
+                    Идет загрузка...
+                </div>
+                <div v-if="cart.length === 0 && loaded" class="List__empty display-2">
                     Пока здесь пусто.
                 </div>
                 <div class="List__info" v-if="cart.length !== 0">
@@ -78,7 +81,14 @@
         },
 
         firebase: {
-            cart: cartRef
+            cart: cartRef,
+
+            anObject: {
+                source: cartRef,
+                readyCallback: function () {
+                    this.loaded = true;
+                }
+            }
         },
 
         data () {
@@ -87,7 +97,8 @@
                 newString: '',
                 showForm: true,
                 username: firebase.auth().currentUser.displayName || firebase.auth().currentUser.email,
-                showCheckedItems: true
+                showCheckedItems: true,
+                loaded: false
             }
         },
 
