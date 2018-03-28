@@ -37,7 +37,7 @@
 
             </div>
         </div>
-        <div class="List__footer">
+        <v-footer :color="'white'">
             <div class="List__wrapper">
                 <div class="List__footer-row">
                     ©2018 Powered by <a href="https://vuejs.org/">vue.js</a> and <a href="https://firebase.google.com/">Google Firebase</a>
@@ -46,7 +46,7 @@
                     Logged as {{ username }} - <a href="#" @click.prevent="logout()">Logout</a>
                 </div>
             </div>
-        </div>
+        </v-footer>
     </div>
 </template>
 
@@ -197,16 +197,6 @@
             margin-top: auto;
             margin-bottom: auto;
             text-align: center;
-        }
-
-        &__footer {
-            flex-grow: 0;
-            flex-shrink: 0;
-            font-size: 12px;
-            color: #999;
-            padding: 10px 0;
-            background-color: #fff;
-            box-shadow: 0 0 2px 0 rgba(0,0,0,0.05);
         }
 
         &__main {
