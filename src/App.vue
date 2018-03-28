@@ -36,7 +36,7 @@
 
     #app {
         font-family: 'Roboto', sans-serif;
-        background-color: #f1f1f1;
+        background-color: #F5F5F5;
         min-height: 100%;
     }
 

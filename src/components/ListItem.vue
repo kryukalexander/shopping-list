@@ -1,5 +1,5 @@
 <template>
-    <div class="list-item" :class="{'list-item--checked' : item.checked}">
+    <v-card class="list-item mb-2" :class="{'list-item--checked' : item.checked}" :color="item.checked ? 'grey lighten-2' : 'white'">
         <label class="list-item__checkbox">
             <input type="checkbox" v-model="item.checked" @change="onChange(item, true)" tabindex="0"/>
             <v-icon>{{ item.checked ? 'check_box' : 'check_box_outline_blank'}}</v-icon>
@@ -13,7 +13,7 @@
         <div class="list-item__button">
             <v-btn @click="onRemove(item)" flat icon large><v-icon>clear</v-icon></v-btn>
         </div>
-    </div>
+    </v-card>
 </template>
 
 <script>
@@ -47,8 +47,6 @@
         align-items: center;
         width: 100%;
         cursor: pointer;
-        background-color: #ffffff;
-        box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.25);
 
         &__info {
             flex-grow: 1;
@@ -77,7 +75,6 @@
 
             &:focus {
                 outline: none;
-                /*background-color: #f2f2f2;*/
             }
         }
         
@@ -107,8 +104,6 @@
                 text-decoration: line-through;
                 opacity: 0.25;
             }
-
-            background-color: #f5f5f5;
         }
     }
 
