@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        <img class="login__icon" src="../../static/favicons/android-chrome-192x192.png" alt="">
+        <img class="login__icon" src="../../static/img/logo.svg" alt="">
 
         <div class="login__form">
             <v-text-field
@@ -9,6 +9,7 @@
                     label="Login"
                     v-model="email"
                     :color="'error'"
+                    
             />
             <v-text-field
                     label="Password"
@@ -18,10 +19,15 @@
                     :append-icon="showPassword ? 'visibility' : 'visibility_off'"
                     :append-icon-cb="() => (showPassword = !showPassword)"
                     :color="'error'"
+                    
             />
 
-            <v-btn @click="login()" color="error">Login</v-btn>
+            <v-btn @click="login()" :color="'error'">Login</v-btn>
             <span v-if="error">{{error}}</span>
+        </div>
+        
+        <div class="login__credits">
+            List icon made by <a href="http://www.freepik.com/">Freepik</a> from <a href="http://www.flaticon.com">www.flaticon.com</a>
         </div>
     </div>
 </template>
@@ -55,7 +61,6 @@
 
 <style lang="scss" scoped>
     .login {
-        background-color: #ffffff;
         height: 100%;
         width: 100%;
         display: flex;
@@ -67,12 +72,19 @@
             width: 400px;
             max-width: 100%;
             padding: 20px;
-            background-color: #fff;
             border-radius: 10px;
         }
 
         &__icon {
             margin-bottom: 20px;
+            width: 200px;
+        }
+        
+        &__credits {
+            position: absolute;
+            left: 5px;
+            bottom: 5px;
+            font-size: 11px;
         }
     }
 </style>

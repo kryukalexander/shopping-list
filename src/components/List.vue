@@ -57,6 +57,9 @@
                 <div class="List__footer-row">
                     Logged as {{ username }} - <a href="#" @click.prevent="logout()">Logout</a>
                 </div>
+                <div class="List__footer-row">
+                    List icon made by <a href="http://www.freepik.com/">Freepik</a> from <a href="http://www.flaticon.com">www.flaticon.com</a>
+                </div>
             </div>
         </v-footer>
     </div>
