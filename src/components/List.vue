@@ -6,8 +6,8 @@
                     solo
                     flat
                     placeholder="Название"
-                    @keyup.enter="addItem()"
                     v-model="newString"
+                    @keyup.enter="addItem()"
                     :autofocus="true"
                     :hide-details="true"
                 />
@@ -17,12 +17,15 @@
         </v-toolbar>
         <div class="List__main">
             <div class="List__items List__wrapper">
+                
                 <div v-if="!loaded" class="List__empty display-2">
                     <v-progress-circular indeterminate size="96" color="red"/>
                 </div>
+                
                 <div v-if="cart.length === 0 && loaded" class="List__empty display-2">
                     Пока здесь пусто.
                 </div>
+                
                 <div class="List__info" v-if="cart.length !== 0">
                     
                     <div class="List__counter title">
@@ -40,28 +43,32 @@
                 </div>
                 
                 <transition-group name="flip-list">
-                    
-                    <list-item v-for="item in sortedCart"
-                               v-show="!(item.checked && !showCheckedItems)"
-                               :key="item['.key']" 
-                               :item="item" 
-                               :on-remove="removeItem" 
-                               :on-change="changeItem"
+                    <list-item 
+                        v-for="item in sortedCart"
+                        v-show="!(item.checked && !showCheckedItems)"
+                        :key="item['.key']" 
+                        :item="item" 
+                        :on-remove="removeItem" 
+                        :on-change="changeItem"
                     />
-
                 </transition-group>
             </div>
         </div>
         <v-footer :color="'white'" :height="'auto'" class="pt-1 pb-1 caption" >
             <div class="List__wrapper">
                 <div class="List__footer-row">
-                    ©2018 Powered by <a href="https://vuejs.org/">vue.js</a> and <a href="https://firebase.google.com/">Google Firebase</a>
+                    ©2018 Powered by 
+                    <a href="https://vuejs.org/">vue.js</a> and 
+                    <a href="https://firebase.google.com/">Google Firebase</a>
                 </div>
                 <div class="List__footer-row">
-                    Logged as {{ username }} - <a href="#" @click.prevent="logout()">Logout</a>
+                    Logged as {{ username }} - 
+                    <a href="#" @click.prevent="logout()">Logout</a>
                 </div>
                 <div class="List__footer-row">
-                    List icon made by <a href="http://www.freepik.com/">Freepik</a> from <a href="http://www.flaticon.com">www.flaticon.com</a>
+                    List icon made by 
+                    <a href="http://www.freepik.com/">Freepik</a> from 
+                    <a href="http://www.flaticon.com">www.flaticon.com</a>
                 </div>
             </div>
         </v-footer>
