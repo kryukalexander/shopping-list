@@ -1,14 +1,21 @@
 <template>
     <v-app>
-        <router-view/>
+        <div class="app-content">
+            <router-view/>
+        </div>
         <div v-if="!production" class="env-status">Dev mode</div>
+        <Footer></Footer>
     </v-app>
 </template>
 
 <script>
     import { isProd }  from './firebaseSetup';
+    import Footer from './components/Footer';
     export default {
         name: 'App',
+        components: {
+            Footer
+        },
         data() {
             return {
                 production: isProd
@@ -42,6 +49,13 @@
 
     .application--wrap {
         min-height: 100% !important;
+    }
+    
+    .app-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
     }
 
     .env-status {

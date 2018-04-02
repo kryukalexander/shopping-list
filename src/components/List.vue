@@ -54,32 +54,12 @@
                 </transition-group>
             </div>
         </div>
-        <v-footer :color="'white'" :height="'auto'" class="pt-1 pb-1 caption" >
-            <div class="List__wrapper">
-                <div class="List__footer-row">
-                    ©2018 Powered by 
-                    <a href="https://vuejs.org/">vue.js</a> and 
-                    <a href="https://firebase.google.com/">Google Firebase</a>
-                </div>
-                <div class="List__footer-row">
-                    Logged as {{ username }} - 
-                    <a href="#" @click.prevent="logout()">Logout</a>
-                </div>
-                <div class="List__footer-row">
-                    List icon made by 
-                    <a href="http://www.freepik.com/">Freepik</a> from 
-                    <a href="http://www.flaticon.com">www.flaticon.com</a>
-                </div>
-            </div>
-        </v-footer>
     </div>
 </template>
 
 <script>
     import ListItem from './ListItem'
     import { cartRef } from '../firebaseSetup'
-    import firebase from 'firebase'
-
 
     export default {
         name: "List",
@@ -103,7 +83,6 @@
                 itemSeparator: ',',
                 newString: '',
                 showForm: true,
-                username: firebase.auth().currentUser.displayName || firebase.auth().currentUser.email,
                 showCheckedItems: true,
                 loaded: false
             }
@@ -165,12 +144,6 @@
                     copy.editDate = Date.now();
                 }
                 cartRef.child(item['.key']).set(copy);
-            },
-
-            logout() {
-                firebase.auth().signOut().then(() =>
-                    this.$router.replace('login')
-                )
             }
         }
     }
@@ -205,6 +178,7 @@
         display: flex;
         flex-direction: column;
         overflow: hidden;
+        flex-grow: 1;
 
         &__wrapper {
             width: 100%;
@@ -251,12 +225,6 @@
                 flex-shrink: 0;
                 margin: 0 10px;
             }
-        }
-
-        &__footer-row {
-            display: inline-block;
-            vertical-align: middle;
-            margin-right: 10px;
         }
     }
 
