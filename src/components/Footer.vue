@@ -1,21 +1,23 @@
 <template>
     <v-footer :color="'white'" :height="'auto'" class="pa-1 caption" >
-            <div class="Footer-row">
+        <div class="Footer">    
+            <div class="Footer__row">
                 ©2018 Powered by
                 <a href="https://vuejs.org/">vue.js</a> and
                 <a href="https://firebase.google.com/">Google Firebase</a>
             </div>
 
-            <div class="Footer-row">
+            <div class="Footer__row">
                 List icon made by
                 <a href="http://www.freepik.com/">Freepik</a> from
                 <a href="http://www.flaticon.com">www.flaticon.com</a>
             </div>
 
-            <div v-if="getUsername(username)" class="Footer-row">
+            <div v-if="getUsername(username)" class="Footer__row">
                 Logged as {{ getUsername(username) }} -
                 <a href="#" @click.prevent="logout()">Logout</a>
             </div>
+        </div>
     </v-footer>
 </template>
 
@@ -56,12 +58,16 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
      
-     .Footer-row {
+    .Footer {
+        &__row {
             display: inline-block;
             vertical-align: middle;
             margin-right: 10px;
-     }
+        }
+    } 
+    
+
     
 </style>
