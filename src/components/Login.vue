@@ -1,5 +1,5 @@
 <template>
-    <div class="login">
+    <div class="login pa-2">
         <img class="login__icon" src="../../static/img/logo.svg" alt="">
 
         <div class="login__form">
@@ -19,15 +19,10 @@
                     :append-icon="showPassword ? 'visibility' : 'visibility_off'"
                     :append-icon-cb="() => (showPassword = !showPassword)"
                     :color="'error'"
-                    
             />
 
             <v-btn @click="login()" :color="'error'">Login</v-btn>
-            <span v-if="error">{{error}}</span>
-        </div>
-        
-        <div class="login__credits">
-            List icon made by <a href="http://www.freepik.com/">Freepik</a> from <a href="http://www.flaticon.com">www.flaticon.com</a>
+            <div class="error--text" v-if="error">{{ error }}</div>
         </div>
     </div>
 </template>
@@ -45,6 +40,7 @@
                 showPassword: false
             }
         },
+        
         methods: {
 
             login() {
@@ -67,6 +63,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        flex-grow: 1;
 
         &__form {
             width: 400px;
@@ -78,13 +75,6 @@
         &__icon {
             margin-bottom: 20px;
             width: 200px;
-        }
-        
-        &__credits {
-            position: absolute;
-            left: 5px;
-            bottom: 5px;
-            font-size: 11px;
         }
     }
 </style>
