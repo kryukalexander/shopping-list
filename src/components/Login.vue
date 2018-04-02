@@ -19,6 +19,7 @@
                     :append-icon="showPassword ? 'visibility' : 'visibility_off'"
                     :append-icon-cb="() => (showPassword = !showPassword)"
                     :color="'error'"
+                    @keyup.enter="login()"
             />
 
             <v-btn @click="login()" :color="'error'">Login</v-btn>
