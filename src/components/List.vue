@@ -1,20 +1,7 @@
 <template>
     <div class="List">
-        <v-toolbar :color="'error'" :fixed="true" :height="64">
-            <div class="list-form">
-                <v-text-field 
-                    solo
-                    flat
-                    placeholder="Название"
-                    v-model="newString"
-                    @keyup.enter="addItem()"
-                    :autofocus="true"
-                    :hide-details="true"
-                />
-
-                <v-btn icon dark v-on:click="addItem()"><v-icon>add</v-icon></v-btn>
-            </div>
-        </v-toolbar>
+        <ListForm v-if="loaded" :on-add-item="addItem" />
+        
         <div class="List__main">
             <div class="List__items List__wrapper">
                 
@@ -22,7 +9,7 @@
                     <v-progress-circular indeterminate size="96" color="red"/>
                 </div>
                 
-                <div v-if="cart.length === 0 && loaded" class="List__empty display-2">
+                <div v-if="listIsEmpty" class="List__empty display-2">
                     Пока здесь пусто.
                 </div>
                 
@@ -39,7 +26,6 @@
                     <v-btn v-if="checkedItemsCount"  @click.prevent="removeCheckedItems(cart)" icon>
                         <v-icon>delete</v-icon>
                     </v-btn>
-                
                 </div>
                 
                 <transition-group name="flip-list">
@@ -59,12 +45,14 @@
 
 <script>
     import ListItem from './ListItem'
+    import ListForm from './ListForm'
     import { cartRef } from '../firebaseSetup'
 
     export default {
         name: "List",
         components: {
-          ListItem
+            ListItem,
+            ListForm
         },
 
         firebase: {
@@ -80,8 +68,6 @@
 
         data () {
             return {
-                itemSeparator: ',',
-                newString: '',
                 showForm: true,
                 showCheckedItems: true,
                 loaded: false
@@ -103,13 +89,17 @@
                 
                 return result;
             },
+            
+            listIsEmpty() {
+                return this.cart.length === 0 && this.loaded
+            },
         },
 
         methods: {
-            addItem() {
-                if (this.newString !== '') {
+            addItem(str) {
+                if (str !== '') {
                     let date = Date.now();
-                    let items = this.newString.split(this.itemSeparator);
+                    let items = str.split(',');
                     items.map((el) => {
                         if (el.trim() !== '' ) {
                             cartRef.push({
@@ -120,7 +110,6 @@
                         }
 
                     });
-                    this.newString = '';
                 }
             },
 
@@ -226,14 +215,6 @@
                 margin: 0 10px;
             }
         }
-    }
-
-    .list-form {
-        width: 100%;
-        max-width: 1000px;
-        padding: 0 10px;
-        margin: 0 auto;
-        display: flex;
     }
 
 </style>
