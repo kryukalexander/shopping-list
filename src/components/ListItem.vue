@@ -8,19 +8,27 @@
             <input 
                 type="checkbox" 
                 v-model="item.checked" 
-                @change="onChange(item, true)" 
+                @change="onChange(item, true)"
+                :disabled="isEditedByAnotherUser(item)"
                 tabindex="0"
             />
             
             <v-icon>{{ item.checked ? 'check_box' : 'check_box_outline_blank'}}</v-icon>
         </label>
 
+        <div v-if="isEditedByAnotherUser(item)" class="list-item__blocker">
+            <v-icon>{{ 'not_interested' }}</v-icon>
+        </div>
+
         <div class="list-item__info">
             
             <input 
                 type="text" 
                 class="list-item__input" 
-                v-model="item.name" 
+                v-model="item.name"
+                :disabled="isEditedByAnotherUser(item)"
+                @focus="handleFocus(item)"
+                @blur="handleBlur(item)"
                 @change="onChange(item)"
             />
             
@@ -28,7 +36,9 @@
         </div>
         
         <div class="list-item__button">
-            <v-btn @click="onRemove(item)" flat icon large>
+            <v-btn @click="onRemove(item)"
+                   :disabled="isEditedByAnotherUser(item)"
+                   flat icon large>
                 <v-icon>clear</v-icon>
             </v-btn>
         </div>
@@ -38,10 +48,26 @@
 <script>
     export default {
         name: "list-item",
-        props: ["item", "onRemove", "onChange", "showDate"],
+        props: ["item", "onRemove", "onChange", "showDate", "user"],
         data () {
             return {
                 isEdited: false
+            }
+        },
+        
+        methods: {
+            handleFocus(item){
+              item.editPerson = this.user;
+              this.onChange(item, true);
+            },
+
+            handleBlur(item){
+                item.editPerson = null;
+                this.onChange(item, false);
+            },
+            
+            isEditedByAnotherUser(item) {
+                return item.editPerson && item.editPerson !== this.user;
             }
         },
 
@@ -94,6 +120,10 @@
 
             &:focus {
                 outline: none;
+            }
+            
+            &:disabled {
+               opacity: 0.5;
             }
         }
         
