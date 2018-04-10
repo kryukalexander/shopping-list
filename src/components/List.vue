@@ -36,6 +36,7 @@
                         :item="item" 
                         :on-remove="removeItem" 
                         :on-change="changeItem"
+                        :user="user"
                     />
                 </transition-group>
             </div>
@@ -47,6 +48,7 @@
     import ListItem from './ListItem'
     import ListForm from './ListForm'
     import { cartRef } from '../firebaseSetup'
+    import firebase from 'firebase'
 
     export default {
         name: "List",
@@ -62,6 +64,7 @@
                 source: cartRef,
                 readyCallback: function () {
                     this.loaded = true;
+                    this.user = firebase.auth().currentUser.email;
                 }
             }
         },
@@ -70,7 +73,8 @@
             return {
                 showForm: true,
                 showCheckedItems: true,
-                loaded: false
+                loaded: false,
+                user: null,
             }
         },
 
