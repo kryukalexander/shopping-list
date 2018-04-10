@@ -32,7 +32,7 @@
                 @change="onChange(item)"
             />
             
-            <div class="list-item__date">{{parseDate}}</div>
+            <div class="list-item__date" v-if="showDate">{{parseDate}}</div>
         </div>
         
         <div class="list-item__button">
@@ -48,7 +48,7 @@
 <script>
     export default {
         name: "list-item",
-        props: ["item", "onRemove", "onChange", "user"],
+        props: ["item", "onRemove", "onChange", "showDate", "user"],
         data () {
             return {
                 isEdited: false
