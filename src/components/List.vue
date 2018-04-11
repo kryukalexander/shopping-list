@@ -19,12 +19,12 @@
                         {{ checkedItemsCount }}/{{cart.length }}
                     </div>
                     
-                    <v-btn v-if="checkedItemsCount"  @click.prevent="toggleCheckedItems()" icon>
-                        <v-icon>{{!showCheckedItems ? 'visibility' : 'visibility_off'}}</v-icon>
+                    <v-btn v-if="checkedItemsCount"  @click.prevent="toggleSetting('showCheckedItems')" icon>
+                        <v-icon>{{!settings.showCheckedItems ? 'visibility' : 'visibility_off'}}</v-icon>
                     </v-btn>
 
-                    <v-btn @click.prevent="toggleEditDate()" icon>
-                        <v-icon>{{!showEditDate ? 'event_note' : 'event_busy'}}</v-icon>
+                    <v-btn @click.prevent="toggleSetting('showEditDate')" icon>
+                        <v-icon>{{!settings.showEditDate ? 'event_note' : 'event_busy'}}</v-icon>
                     </v-btn>
                     
                     <v-btn v-if="checkedItemsCount"  @click.prevent="removeCheckedItems(cart)" icon>
@@ -35,10 +35,10 @@
                 <transition-group name="flip-list">
                     <list-item 
                         v-for="item in sortedCart"
-                        v-show="!(item.checked && !showCheckedItems)"
+                        v-show="!(item.checked && !settings.showCheckedItems)"
                         :key="item['.key']" 
                         :item="item"
-                        :show-date="showEditDate"
+                        :show-date="settings.showEditDate"
                         :on-remove="removeItem" 
                         :on-change="changeItem"
                         :user="user"
@@ -54,6 +54,24 @@
     import ListForm from './ListForm'
     import { cartRef } from '../firebaseSetup'
     import firebase from 'firebase'
+    
+    const STORAGE_KEY = 'shopping-list-settings';
+    
+    let defaults = {
+        showCheckedItems: true,
+        showEditDate: true
+    };
+    
+    let settingsStorage = {
+        
+        fetch: () => {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaults;
+        },
+        
+        save: (settings) => {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(settings))
+        }
+    };
 
     export default {
         name: "List",
@@ -63,24 +81,23 @@
         },
 
         firebase: {
-            cart: cartRef,
-
-            anObject: {
+            
+            cart: {
                 source: cartRef,
                 readyCallback: function () {
                     this.loaded = true;
                     this.user = firebase.auth().currentUser.email;
                 }
             }
+            
         },
 
         data () {
             return {
                 showForm: true,
-                showCheckedItems: true,
                 loaded: false,
                 user: null,
-                showEditDate: false
+                settings: settingsStorage.fetch()
             }
         },
 
@@ -122,6 +139,11 @@
                     });
                 }
             },
+            
+            toggleSetting(key) {
+                this.settings[key] = !this.settings[key];
+                settingsStorage.save(this.settings);
+            },
 
             removeItem(item) {
                 cartRef.child(item['.key']).remove()
@@ -130,14 +152,6 @@
             removeCheckedItems(array) {
                 let toDelete = array.filter((el) => el.checked);
                 toDelete.map((el) => { this.removeItem(el) });
-            },
-
-            toggleCheckedItems() {
-                this.showCheckedItems = !this.showCheckedItems;
-            },
-            
-            toggleEditDate() {
-                this.showEditDate = !this.showEditDate;
             },
 
             changeItem(item, keepDate) {
