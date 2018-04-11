@@ -22,6 +22,10 @@
                     <v-btn v-if="checkedItemsCount"  @click.prevent="toggleCheckedItems()" icon>
                         <v-icon>{{!showCheckedItems ? 'visibility' : 'visibility_off'}}</v-icon>
                     </v-btn>
+
+                    <v-btn @click.prevent="toggleEditDate()" icon>
+                        <v-icon>{{!showEditDate ? 'event_note' : 'event_busy'}}</v-icon>
+                    </v-btn>
                     
                     <v-btn v-if="checkedItemsCount"  @click.prevent="removeCheckedItems(cart)" icon>
                         <v-icon>delete</v-icon>
@@ -33,9 +37,11 @@
                         v-for="item in sortedCart"
                         v-show="!(item.checked && !showCheckedItems)"
                         :key="item['.key']" 
-                        :item="item" 
+                        :item="item"
+                        :show-date="showEditDate"
                         :on-remove="removeItem" 
                         :on-change="changeItem"
+                        :user="user"
                     />
                 </transition-group>
             </div>
@@ -47,6 +53,7 @@
     import ListItem from './ListItem'
     import ListForm from './ListForm'
     import { cartRef } from '../firebaseSetup'
+    import firebase from 'firebase'
 
     export default {
         name: "List",
@@ -62,6 +69,7 @@
                 source: cartRef,
                 readyCallback: function () {
                     this.loaded = true;
+                    this.user = firebase.auth().currentUser.email;
                 }
             }
         },
@@ -70,7 +78,9 @@
             return {
                 showForm: true,
                 showCheckedItems: true,
-                loaded: false
+                loaded: false,
+                user: null,
+                showEditDate: false
             }
         },
 
@@ -119,11 +129,15 @@
 
             removeCheckedItems(array) {
                 let toDelete = array.filter((el) => el.checked);
-                toDelete.map((el) => { this.removeItem(el)});
+                toDelete.map((el) => { this.removeItem(el) });
             },
 
             toggleCheckedItems() {
                 this.showCheckedItems = !this.showCheckedItems;
+            },
+            
+            toggleEditDate() {
+                this.showEditDate = !this.showEditDate;
             },
 
             changeItem(item, keepDate) {
