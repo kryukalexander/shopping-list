@@ -52,26 +52,11 @@
 <script>
     import ListItem from './ListItem'
     import ListForm from './ListForm'
-    import { cartRef } from '../firebaseSetup'
+    import { cartRef } from '../setup/firebaseSetup'
     import firebase from 'firebase'
+    import userSettings from '../setup/userSettings'
     
-    const STORAGE_KEY = 'shopping-list-settings';
-    
-    let defaults = {
-        showCheckedItems: true,
-        showEditDate: true
-    };
-    
-    let settingsStorage = {
-        
-        fetch: () => {
-            return JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaults;
-        },
-        
-        save: (settings) => {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(settings))
-        }
-    };
+    let settingsStorage = new userSettings();
 
     export default {
         name: "List",

@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import { isProd }  from './firebaseSetup';
+    import { isProd }  from './setup/firebaseSetup';
     import Footer from './components/Footer';
     export default {
         name: 'App',
