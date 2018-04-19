@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import config from './config';
+import config from '../config';
 
 export const isProd = process.env.NODE_ENV === 'production';
 
