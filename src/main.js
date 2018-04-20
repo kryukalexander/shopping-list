@@ -6,6 +6,7 @@ import App from './App'
 import router from './router'
 import VueFire from 'vuefire'
 import firebase from 'firebase'
+import store from './store/index'
 
 import 'vuetify/dist/vuetify.min.css'
 
@@ -20,10 +21,14 @@ firebase.auth().onAuthStateChanged(function (user) {
         app = new Vue({
             el: '#app',
             router,
+            store,
             components: {App},
             template: '<App/>'
         });
     }
+    
+    let userMail = user ? user.email : null;
+    store.commit('setUserMail', userMail);
 });
 
 /* eslint-disable no-new */
