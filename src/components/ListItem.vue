@@ -32,7 +32,7 @@
                 @change="onChange(item)"
             />
             
-            <div class="list-item__date" v-if="showDate">{{parseDate}}</div>
+            <div class="list-item__date" v-if="settings.showEditDate">{{parseDate}}</div>
         </div>
         
         <div class="list-item__button">
@@ -48,7 +48,7 @@
 <script>
     export default {
         name: "list-item",
-        props: ["item", "onRemove", "onChange", "showDate", "user"],
+        props: ["item", "onRemove", "onChange"],
         data () {
             return {
                 isEdited: false
@@ -57,7 +57,7 @@
         
         methods: {
             handleFocus(item){
-              item.editPerson = this.user;
+              item.editPerson = this.username;
               this.onChange(item, true);
             },
 
@@ -67,7 +67,7 @@
             },
             
             isEditedByAnotherUser(item) {
-                return item.editPerson && item.editPerson !== this.user;
+                return item.editPerson && (item.editPerson !== this.username);
             }
         },
 
@@ -80,6 +80,14 @@
                 let hours = (dateToParse.getHours() + '').padStart(2, '0');
                 let minutes = (dateToParse.getMinutes() + '').padStart(2, '0');
                 return `${status} ${calendar}, ${hours}:${minutes}`;
+            },
+            
+            settings() {
+                return this.$store.state.settings
+            },
+            
+            username() {
+                return this.$store.state.userMail
             }
         }
     }

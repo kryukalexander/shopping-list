@@ -38,10 +38,8 @@
                         v-show="!(item.checked && !settings.showCheckedItems)"
                         :key="item['.key']" 
                         :item="item"
-                        :show-date="settings.showEditDate"
                         :on-remove="removeItem" 
                         :on-change="changeItem"
-                        :user="user"
                     />
                 </transition-group>
             </div>
@@ -53,11 +51,7 @@
     import ListItem from './ListItem'
     import ListForm from './ListForm'
     import { cartRef } from '../setup/firebaseSetup'
-    import firebase from 'firebase'
-    import userSettings from '../setup/userSettings'
     
-    let settingsStorage = new userSettings();
-
     export default {
         name: "List",
         components: {
@@ -71,7 +65,6 @@
                 source: cartRef,
                 readyCallback: function () {
                     this.loaded = true;
-                    this.user = firebase.auth().currentUser.email;
                 }
             }
             
@@ -81,8 +74,6 @@
             return {
                 showForm: true,
                 loaded: false,
-                user: null,
-                settings: settingsStorage.fetch()
             }
         },
 
@@ -105,6 +96,10 @@
             listIsEmpty() {
                 return this.cart.length === 0 && this.loaded
             },
+            
+            settings() {
+                return this.$store.state.settings;
+            } 
         },
 
         methods: {
@@ -126,8 +121,7 @@
             },
             
             toggleSetting(key) {
-                this.settings[key] = !this.settings[key];
-                settingsStorage.save(this.settings);
+                this.$store.commit('toggleSetting', key)
             },
 
             removeItem(item) {

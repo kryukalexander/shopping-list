@@ -13,8 +13,8 @@
                 <a href="http://www.flaticon.com">www.flaticon.com</a>
             </div>
 
-            <div v-if="getUsername(username)" class="Footer__row">
-                Logged as {{ getUsername(username) }} -
+            <div v-if="username" class="Footer__row">
+                Logged as {{ username }} -
                 <a href="#" @click.prevent="logout()">Logout</a>
             </div>
         </div>
@@ -27,29 +27,17 @@
     export default {
         name: "Footer",
         
-        data() {
-            return {
-                username: firebase.auth().currentUser, 
-            }
-        },
-        
         methods: {
             logout() {
-                this.username = null;
                 firebase.auth().signOut().then(() =>
                     this.$router.replace('login')
                 )
             },
-            
-            getUsername(user) {
-                let username = user ? user.email : null;
-                return username;
-            }
         },
-
-        watch:{
-            $route (to){
-                this.username = ( to === '/login' ) ? null : firebase.auth().currentUser
+        
+        computed: {
+            username(){
+                return this.$store.state.userMail;
             }
         }
     }
