@@ -42,11 +42,8 @@
             },
             
             getUsername(user) {
-                if (user) {
-                    return user.email 
-                } else {
-                    return null;
-                }
+                let username = user ? user.email : null;
+                return username;
             }
         },
 
@@ -67,7 +64,5 @@
             margin-right: 10px;
         }
     } 
-    
-
     
 </style>
