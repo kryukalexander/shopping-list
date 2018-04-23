@@ -80,10 +80,7 @@
                 let status = !this.item.editDate ? 'Добавлено' : 'Изменено';
                 let date = !this.item.editDate ? this.item.date : this.item.editDate;
                 let dateToParse = new Date(date);
-                let calendar = dateToParse.toLocaleDateString();
-                let hours = (dateToParse.getHours() + '').padStart(2, '0');
-                let minutes = (dateToParse.getMinutes() + '').padStart(2, '0');
-                return `${status} ${calendar}, ${hours}:${minutes}`;
+                return status + ' ' + dateToParse.toLocaleString();
             },
             
             settings() {
