@@ -28,8 +28,8 @@
                 v-model="item.name"
                 :disabled="isEditedByAnotherUser(item)"
                 @focus="handleFocus(item)"
-                @blur="handleBlur(item)"
-                @change="onChange(item)"
+                @blur="handleChange(item)"
+                @change="handleChange(item)"
             />
             
             <div class="list-item__date" v-if="settings.showEditDate">{{parseDate}}</div>
@@ -51,19 +51,23 @@
         props: ["item", "onRemove", "onChange"],
         data () {
             return {
-                isEdited: false
+                isEdited: false,
+                oldFieldValue: '',
             }
         },
         
         methods: {
             handleFocus(item){
+              this.oldFieldValue = item.name;
               item.editPerson = this.username;
               this.onChange(item, true);
             },
 
-            handleBlur(item){
+            handleChange(item){
+                let keepDate = this.oldFieldValue.trim() === item.name;
                 item.editPerson = null;
-                this.onChange(item, false);
+                this.oldFieldValue = '';
+                this.onChange(item, keepDate);
             },
             
             isEditedByAnotherUser(item) {
