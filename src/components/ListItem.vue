@@ -28,12 +28,22 @@
                 v-model="item.name"
                 :disabled="isEditedByAnotherUser(item)"
                 @focus="handleFocus(item)"
-                @blur="handleBlur(item)"
-                @change="onChange(item)"
+                @blur="handleChange(item)"
+                @change="handleChange(item)"
             />
             
             <div class="list-item__date" v-if="settings.showEditDate">{{parseDate}}</div>
         </div>
+
+        <div class="list-item__button" :class="{'list-item__button--disabled' : !item.lowPriority}">
+            <v-btn @click="togglePriority(item)"
+                   :color="item.lowPriority ? 'green' : undefined"
+                   :disabled="isEditedByAnotherUser(item)"
+                   flat icon large>
+                <v-icon>{{ 'arrow_downward' }}</v-icon>
+            </v-btn>
+        </div>
+        
         
         <div class="list-item__button">
             <v-btn @click="onRemove(item)"
@@ -51,19 +61,29 @@
         props: ["item", "onRemove", "onChange"],
         data () {
             return {
-                isEdited: false
+                isEdited: false,
+                oldFieldValue: '',
             }
         },
         
         methods: {
             handleFocus(item){
+              this.oldFieldValue = item.name;
               item.editPerson = this.username;
               this.onChange(item, true);
             },
 
-            handleBlur(item){
+            handleChange(item){
+                // Check if new item value is equal to old value to keep edit date
+                let keepDate = this.oldFieldValue.trim() === item.name;
                 item.editPerson = null;
-                this.onChange(item, false);
+                this.oldFieldValue = '';
+                this.onChange(item, keepDate);
+            },
+            
+            togglePriority(item) {
+                item.lowPriority = !item.lowPriority;
+                this.onChange(item, true);
             },
             
             isEditedByAnotherUser(item) {
@@ -76,10 +96,7 @@
                 let status = !this.item.editDate ? 'Добавлено' : 'Изменено';
                 let date = !this.item.editDate ? this.item.date : this.item.editDate;
                 let dateToParse = new Date(date);
-                let calendar = dateToParse.toLocaleDateString();
-                let hours = (dateToParse.getHours() + '').padStart(2, '0');
-                let minutes = (dateToParse.getMinutes() + '').padStart(2, '0');
-                return `${status} ${calendar}, ${hours}:${minutes}`;
+                return status + ' ' + dateToParse.toLocaleString();
             },
             
             settings() {
@@ -154,6 +171,10 @@
 
         &__button {
             flex-shrink: 0;
+            
+            &--disabled {
+                opacity: 0.5;
+            }
         }
 
         &--checked {
