@@ -80,6 +80,7 @@
         computed: {
             sortedCart() {
                 this.cart = this.cart.sort( (a,b) => a.date < b.date );
+                this.cart = this.cart.sort( (a,b) => a.lowPriority > b.lowPriority );
                 this.cart = this.cart.sort( (a,b) => a.checked > b.checked );
                 return this.cart;
             },

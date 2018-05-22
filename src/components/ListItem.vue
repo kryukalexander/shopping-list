@@ -34,6 +34,16 @@
             
             <div class="list-item__date" v-if="settings.showEditDate">{{parseDate}}</div>
         </div>
+
+        <div class="list-item__button" :class="{'list-item__button--disabled' : !item.lowPriority}">
+            <v-btn @click="togglePriority(item)"
+                   :color="item.lowPriority ? 'green' : undefined"
+                   :disabled="isEditedByAnotherUser(item)"
+                   flat icon large>
+                <v-icon>{{ 'arrow_downward' }}</v-icon>
+            </v-btn>
+        </div>
+        
         
         <div class="list-item__button">
             <v-btn @click="onRemove(item)"
@@ -64,10 +74,16 @@
             },
 
             handleChange(item){
+                // Check if new item value is equal to old value to keep edit date
                 let keepDate = this.oldFieldValue.trim() === item.name;
                 item.editPerson = null;
                 this.oldFieldValue = '';
                 this.onChange(item, keepDate);
+            },
+            
+            togglePriority(item) {
+                item.lowPriority = !item.lowPriority;
+                this.onChange(item, true);
             },
             
             isEditedByAnotherUser(item) {
@@ -155,6 +171,10 @@
 
         &__button {
             flex-shrink: 0;
+            
+            &--disabled {
+                opacity: 0.5;
+            }
         }
 
         &--checked {
