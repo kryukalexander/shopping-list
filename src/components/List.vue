@@ -114,6 +114,7 @@
                                 checked: false,
                                 name: el.trim(),
                                 date: date,
+                                lowPriority: false
                             });
                         }
 
