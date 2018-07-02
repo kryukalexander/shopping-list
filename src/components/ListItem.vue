@@ -30,6 +30,7 @@
                 @focus="handleFocus(item)"
                 @blur="handleChange(item)"
                 @change="handleChange(item)"
+                aria-label="Item name"
             />
             
             <div class="list-item__date" v-if="settings.showEditDate">{{parseDate}}</div>
@@ -37,10 +38,11 @@
 
         <div class="list-item__button" :class="{'list-item__button--disabled' : !item.lowPriority}">
             <v-btn @click="togglePriority(item)"
-                   :color="item.lowPriority ? 'green' : undefined"
                    :disabled="isEditedByAnotherUser(item)"
+                   aria-label="Toggle item priority"
+                   title="Toggle item priority"
                    flat icon large>
-                <v-icon>{{ 'arrow_downward' }}</v-icon>
+                <v-icon>{{ item.lowPriority ? 'arrow_downward' : 'arrow_upward'}}</v-icon>
             </v-btn>
         </div>
         
@@ -48,6 +50,8 @@
         <div class="list-item__button">
             <v-btn @click="onRemove(item)"
                    :disabled="isEditedByAnotherUser(item)"
+                   aria-label="Remove item"
+                   title="Remove item"
                    flat icon large>
                 <v-icon>clear</v-icon>
             </v-btn>
@@ -129,7 +133,7 @@
             top: 0;
             font-size: 11px;
             font-style: italic;
-            color: #aaa;
+            color: #ссс;
         }
 
         &__input {
@@ -180,7 +184,6 @@
         &--checked {
             .list-item__input {
                 text-decoration: line-through;
-                opacity: 0.25;
             }
         }
     }

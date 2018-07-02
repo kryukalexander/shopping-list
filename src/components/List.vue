@@ -2,7 +2,7 @@
     <div class="List">
         <ListForm v-if="loaded" :on-add-item="addItem" />
         
-        <div class="List__main">
+        <main class="List__main">
             <div class="List__items List__wrapper">
                 
                 <div v-if="!loaded" class="List__empty display-2">
@@ -19,15 +19,29 @@
                         {{ checkedItemsCount }}/{{cart.length }}
                     </div>
                     
-                    <v-btn v-if="checkedItemsCount"  @click.prevent="toggleSetting('showCheckedItems')" icon>
+                    <v-btn title="Toggle checked items visibility" 
+                           aria-label="Toggle checked items visibility" 
+                           v-if="checkedItemsCount" 
+                           @click.prevent="toggleSetting('showCheckedItems')" icon
+                    >
                         <v-icon>{{!settings.showCheckedItems ? 'visibility' : 'visibility_off'}}</v-icon>
                     </v-btn>
 
-                    <v-btn @click.prevent="toggleSetting('showEditDate')" icon>
+                    <v-btn @click.prevent="toggleSetting('showEditDate')" 
+                           title="Toggle date visibility"
+                           aria-label="Toggle date visibility"
+                           icon
+                    >
                         <v-icon>{{!settings.showEditDate ? 'event_note' : 'event_busy'}}</v-icon>
                     </v-btn>
                     
-                    <v-btn v-if="checkedItemsCount"  @click.prevent="removeCheckedItems(cart)" icon>
+                    <v-btn 
+                        v-if="checkedItemsCount"  
+                        aria-label="Delete checked items"
+                        title="Delete checked items"
+                        @click.prevent="removeCheckedItems(cart)" 
+                        icon
+                    >
                         <v-icon>delete</v-icon>
                     </v-btn>
                 </div>
@@ -43,7 +57,7 @@
                     />
                 </transition-group>
             </div>
-        </div>
+        </main>
     </div>
 </template>
 
