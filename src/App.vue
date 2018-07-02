@@ -3,7 +3,7 @@
         <div class="app-content">
             <router-view/>
         </div>
-        <div v-if="!production" class="env-status">Dev mode</div>
+        <div role="banner" v-if="!production" class="env-status">Dev mode</div>
         <Footer></Footer>
     </v-app>
 </template>
@@ -62,11 +62,11 @@
         position: fixed;
         right: 10px;
         bottom: 50px;
-        font-size: 12px;
+        font-size: 20px;
         font-weight: bold;
         padding: 4px 10px;
         color: white;
-        background-color: red;
+        background-color: #ff5252 ;
         border-radius: 5px;
         text-transform: uppercase;
     }

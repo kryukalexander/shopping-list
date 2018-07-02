@@ -4,14 +4,14 @@
             <v-text-field
                     solo
                     flat
-                    placeholder="Название"
                     v-model="newString"
                     @keyup.enter="handleAddItem()"
                     :autofocus="true"
                     :hide-details="true"
+                    label="Название"
             />
 
-            <v-btn icon dark v-on:click="handleAddItem()"><v-icon>add</v-icon></v-btn>
+            <v-btn label="Add items" title="Add Items" icon dark v-on:click="handleAddItem()"><v-icon>add</v-icon></v-btn>
         </div>
     </v-toolbar>
 </template>

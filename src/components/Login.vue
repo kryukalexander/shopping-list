@@ -1,31 +1,30 @@
 <template>
-    <div class="login pa-2">
+    <main class="login pa-2">
         <img class="login__icon" src="../../static/img/logo.svg" alt="">
 
         <div class="login__form">
             <v-text-field
-                    type="email"
-                    name="Login"
-                    label="Login"
-                    v-model="email"
-                    :color="'error'"
-                    
+                type="email"
+                name="Login"
+                label="Login"
+                v-model="email"
+                :color="'error'"
             />
             <v-text-field
-                    label="Password"
-                    name="Password"
-                    v-model="password"
-                    :type="!showPassword ? 'password' : 'text'"
-                    :append-icon="!showPassword ? 'visibility' : 'visibility_off'"
-                    :append-icon-cb="() => (showPassword = !showPassword)"
-                    :color="'error'"
-                    @keyup.enter="login()"
+                label="Password"
+                name="Password"
+                v-model="password"
+                :type="!showPassword ? 'password' : 'text'"
+                :append-icon="!showPassword ? 'visibility' : 'visibility_off'"
+                :append-icon-cb="() => (showPassword = !showPassword)"
+                :color="'error'"
+                @keyup.enter="login()"
             />
 
-            <v-btn @click="login()" :color="'error'">Login</v-btn>
+            <v-btn @click="login()" :color="'error'" large>Login</v-btn>
             <div class="error--text" v-if="error">{{ error }}</div>
         </div>
-    </div>
+    </main>
 </template>
 
 <script>
@@ -63,6 +62,7 @@
         align-items: center;
         justify-content: center;
         flex-grow: 1;
+        background-color: #fff;
 
         &__form {
             width: 400px;
