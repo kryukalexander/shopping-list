@@ -6,7 +6,8 @@ Vue.use(Vuex);
 
 let defaults = {
     showCheckedItems: true,
-    showEditDate: true
+    showLowPriorityItems: true,
+    showEditDate: false
 };
 
 let localSettings = new storageAPI(defaults, 'shopping-list-settings');

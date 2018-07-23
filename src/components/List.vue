@@ -16,16 +16,8 @@
                 <div class="List__info" v-if="cart.length !== 0">
                     
                     <div class="List__counter title">
-                        {{ checkedItemsCount }}/{{cart.length }}
+                        {{ checkedItems.length }}/{{cart.length }}
                     </div>
-                    
-                    <v-btn title="Toggle checked items visibility" 
-                           aria-label="Toggle checked items visibility" 
-                           v-if="checkedItemsCount" 
-                           @click.prevent="toggleSetting('showCheckedItems')" icon
-                    >
-                        <v-icon>{{!settings.showCheckedItems ? 'visibility' : 'visibility_off'}}</v-icon>
-                    </v-btn>
 
                     <v-btn @click.prevent="toggleSetting('showEditDate')" 
                            title="Toggle date visibility"
@@ -36,10 +28,10 @@
                     </v-btn>
                     
                     <v-btn 
-                        v-if="checkedItemsCount"  
+                        v-if="checkedItems.length"  
                         aria-label="Delete checked items"
                         title="Delete checked items"
-                        @click.prevent="removeCheckedItems(cart)" 
+                        @click.prevent="removeCheckedItems()" 
                         icon
                     >
                         <v-icon>delete</v-icon>
@@ -49,11 +41,65 @@
                 <transition-group name="flip-list">
                     <list-item 
                         v-for="item in sortedCart"
-                        v-show="!(item.checked && !settings.showCheckedItems)"
                         :key="item['.key']" 
                         :item="item"
                         :on-remove="removeItem" 
                         :on-change="changeItem"
+                    />
+                    
+                    <div class="List__info" v-if="lowPriorityItems.length" :key="'lowPriorityToggle'">
+                        <div class="List__counter title">
+                            Низкий приоритет ({{ lowPriorityItems.length }})
+                        </div>
+                        <v-btn 
+                           title="Toggle checked items visibility"
+                           aria-label="Toggle checked items visibility"
+                           @click.prevent="toggleSetting('showLowPriorityItems')" icon
+                        >
+                            <v-icon>{{!settings.showLowPriorityItems ? 'visibility' : 'visibility_off'}}</v-icon>
+                        </v-btn>
+                    </div>
+                    
+                    <list-item
+                            v-for="item in lowPriorityItems"
+                            :key="item['.key']"
+                            :item="item"
+                            :on-remove="removeItem"
+                            :on-change="changeItem"
+                            v-show="settings.showLowPriorityItems"
+                    />
+                    
+                    <div class="List__info" v-if="checkedItems.length" :key="'checkedToggle'">
+                        <div class="List__counter title">
+                            Отмеченные ({{ checkedItems.length }})
+                        </div>
+                        <v-btn 
+                           title="Toggle checked items visibility"
+                           aria-label="Toggle checked items visibility"
+                           @click.prevent="toggleSetting('showCheckedItems')" 
+                           icon
+                        >
+                            <v-icon>{{!settings.showCheckedItems ? 'visibility' : 'visibility_off'}}</v-icon>
+                        </v-btn>
+
+                        <v-btn
+                            v-if="checkedItems.length"
+                            aria-label="Delete checked items"
+                            title="Delete checked items"
+                            @click.prevent="removeCheckedItems()"
+                            icon
+                        >
+                            <v-icon>delete</v-icon>
+                        </v-btn>
+                    </div>
+                    
+                    <list-item
+                            v-for="item in checkedItems"
+                            :key="item['.key']"
+                            :item="item"
+                            :on-remove="removeItem"
+                            :on-change="changeItem"
+                            v-show="settings.showCheckedItems"
                     />
                 </transition-group>
             </div>
@@ -93,19 +139,16 @@
 
         computed: {
             sortedCart() {
-                this.cart = this.cart.sort( (a,b) => a.date < b.date );
-                this.cart = this.cart.sort( (a,b) => a.lowPriority > b.lowPriority );
-                this.cart = this.cart.sort( (a,b) => a.checked > b.checked );
-                return this.cart;
+                const sorted = this.cart.filter( (el) => !el.checked && !el.lowPriority );
+                return sorted.reverse();
             },
-
-            checkedItemsCount() {
-                let result = 0;
-                this.cart.map((el) => {
-                    if (el.checked) { result++ }
-                });
-                
-                return result;
+            
+            checkedItems() {
+                return this.cart.filter( el => el.checked);
+            },
+            
+            lowPriorityItems() {
+                return this.cart.filter( el => el.lowPriority && !el.checked);
             },
             
             listIsEmpty() {
@@ -144,9 +187,8 @@
                 cartRef.child(item['.key']).remove()
             },
 
-            removeCheckedItems(array) {
-                let toDelete = array.filter((el) => el.checked);
-                toDelete.map((el) => { this.removeItem(el) });
+            removeCheckedItems() {
+                this.checkedItems.map((el) => { this.removeItem(el) });
             },
 
             changeItem(item, keepDate) {
