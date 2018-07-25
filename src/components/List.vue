@@ -171,8 +171,8 @@
         methods: {
             addItem(str) {
                 if (str !== '') {
-                    let date = Date.now();
-                    let items = str.split(',');
+                    const date = Date.now();
+                    const items = str.split(',');
                     items.map((el) => {
                         if (el.trim() !== '' ) {
                             cartRef.push({
@@ -182,7 +182,6 @@
                                 lowPriority: false
                             });
                         }
-
                     });
                 }
             },
