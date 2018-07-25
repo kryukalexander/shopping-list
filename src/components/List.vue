@@ -13,32 +13,33 @@
                     Пока здесь пусто.
                 </div>
                 
-                <div class="List__info" v-if="cart.length !== 0">
-                    
-                    <div class="List__counter title">
-                        {{ checkedItems.length }}/{{cart.length }}
-                    </div>
+                <transition-group name="flip-list">
+                    <div class="List__info" v-if="cart.length !== 0" :key="'listHeading'">
 
-                    <v-btn @click.prevent="toggleSetting('showEditDate')" 
+                        <div class="List__counter title">
+                            {{ checkedItems.length }}/{{cart.length }}
+                        </div>
+
+                        <v-btn 
+                           @click.prevent="toggleSetting('showEditDate')"
                            title="Toggle date visibility"
                            aria-label="Toggle date visibility"
                            icon
-                    >
-                        <v-icon>{{!settings.showEditDate ? 'event_note' : 'event_busy'}}</v-icon>
-                    </v-btn>
+                        >
+                            <v-icon>{{!settings.showEditDate ? 'event_note' : 'event_busy'}}</v-icon>
+                        </v-btn>
+
+                        <v-btn
+                                aria-label="Delete all items"
+                                title="Delete all items"
+                                @click.prevent="removeItems(cart)"
+                                icon
+                        >
+                            <v-icon>delete</v-icon>
+                        </v-btn>
+
+                    </div>
                     
-                    <v-btn 
-                        v-if="checkedItems.length"  
-                        aria-label="Delete checked items"
-                        title="Delete checked items"
-                        @click.prevent="removeCheckedItems()" 
-                        icon
-                    >
-                        <v-icon>delete</v-icon>
-                    </v-btn>
-                </div>
-                
-                <transition-group name="flip-list">
                     <list-item 
                         v-for="item in sortedCart"
                         :key="item['.key']" 
@@ -58,15 +59,23 @@
                         >
                             <v-icon>{{!settings.showLowPriorityItems ? 'visibility' : 'visibility_off'}}</v-icon>
                         </v-btn>
+                        <v-btn
+                            aria-label="Delete low priority items"
+                            title="Delete low priority items"
+                            @click.prevent="removeItems(lowPriorityItems)"
+                            icon
+                        >
+                            <v-icon>delete</v-icon>
+                        </v-btn>
                     </div>
                     
                     <list-item
-                            v-for="item in lowPriorityItems"
-                            :key="item['.key']"
-                            :item="item"
-                            :on-remove="removeItem"
-                            :on-change="changeItem"
-                            v-show="settings.showLowPriorityItems"
+                        v-for="item in lowPriorityItems"
+                        :key="item['.key']"
+                        :item="item"
+                        :on-remove="removeItem"
+                        :on-change="changeItem"
+                        v-show="settings.showLowPriorityItems"
                     />
                     
                     <div class="List__info" v-if="checkedItems.length" :key="'checkedToggle'">
@@ -83,10 +92,9 @@
                         </v-btn>
 
                         <v-btn
-                            v-if="checkedItems.length"
                             aria-label="Delete checked items"
                             title="Delete checked items"
-                            @click.prevent="removeCheckedItems()"
+                            @click.prevent="removeItems(checkedItems)"
                             icon
                         >
                             <v-icon>delete</v-icon>
@@ -94,12 +102,12 @@
                     </div>
                     
                     <list-item
-                            v-for="item in checkedItems"
-                            :key="item['.key']"
-                            :item="item"
-                            :on-remove="removeItem"
-                            :on-change="changeItem"
-                            v-show="settings.showCheckedItems"
+                        v-for="item in checkedItems"
+                        :key="item['.key']"
+                        :item="item"
+                        :on-remove="removeItem"
+                        :on-change="changeItem"
+                        v-show="settings.showCheckedItems"
                     />
                 </transition-group>
             </div>
@@ -163,8 +171,8 @@
         methods: {
             addItem(str) {
                 if (str !== '') {
-                    let date = Date.now();
-                    let items = str.split(',');
+                    const date = Date.now();
+                    const items = str.split(',');
                     items.map((el) => {
                         if (el.trim() !== '' ) {
                             cartRef.push({
@@ -174,7 +182,6 @@
                                 lowPriority: false
                             });
                         }
-
                     });
                 }
             },
@@ -186,9 +193,10 @@
             removeItem(item) {
                 cartRef.child(item['.key']).remove()
             },
-
-            removeCheckedItems() {
-                this.checkedItems.map((el) => { this.removeItem(el) });
+            
+            removeItems(array){
+                const toDelete = [...array];
+                toDelete.map((el) => { return this.removeItem(el) });  
             },
 
             changeItem(item, keepDate) {
@@ -222,7 +230,8 @@
     
     .flip-list-leave-to {
         opacity: 0;
-        transform: translateX(100%);
+        transform-origin: top center;
+        transform: scaleY(0);
         transition: all $animation-duration;
     }
     
