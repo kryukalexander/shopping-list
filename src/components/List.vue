@@ -196,8 +196,8 @@
             },
             
             removeItems(array){
-               const toDelete = [...array];
-                toDelete.map((el) => { this.removeItem(el) });  
+                const toDelete = [...array];
+                toDelete.map((el) => { return this.removeItem(el) });  
             },
 
             changeItem(item, keepDate) {
