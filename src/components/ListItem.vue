@@ -133,7 +133,7 @@
             top: 0;
             font-size: 11px;
             font-style: italic;
-            color: #ссс;
+            color: #ccc;
         }
 
         &__input {
