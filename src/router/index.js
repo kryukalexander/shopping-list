@@ -11,7 +11,7 @@ let router = new Router({
 
         {
             path: '/list',
-            name: 'List',
+            name: 'My List',
             component: List,
             meta: {
                 requiresAuth: true
@@ -36,6 +36,7 @@ let router = new Router({
 router.beforeEach((to, from, next) => {
     let currentUser = firebase.auth().currentUser;
     let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+    document.title = to.name ? to.name + ' - Shopping List' : 'Shopping list';
 
     if (requiresAuth && !currentUser) next('login');
     else if (!requiresAuth && currentUser) next('list');
